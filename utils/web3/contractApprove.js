@@ -1,4 +1,5 @@
-import { calculateGasMargin, getGasPrice, useTokenContract } from './web3Utils'
+// import { calculateGasMargin, getGasPrice, useTokenContract } from './web3Utils'
+import { useTokenContract } from './web3Utils'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useCallback } from './contractEvent'
 import COIN_ABI from './coinABI'

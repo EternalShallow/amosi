@@ -60,6 +60,9 @@ export default {
         if (this.point === 8) {
           val = this.$el.value.replace(/^\D*(\d*(?:\.\d{0,8})?).*$/g, '$1')
         }
+        if (this.point === 18) {
+          val = this.$el.value.replace(/^\D*(\d*(?:\.\d{0,18})?).*$/g, '$1')
+        }
         // console.log(this.point, val, this.$el.value, this.max)
         this.$el.value = val
         // this.$el.value = val.replace(/[^1-9]{0,1}(\d*(?:\.\d{0,2})?).*$/g, '$1')
@@ -210,7 +213,7 @@ export default {
     border: 1px solid transparent;  // 去除默认未选中状态边框
     outline: none; // 去除默认选中状态边框
     background-color: rgba(0, 0, 0, 0);// 透明背景
-    text-align: right;
+    text-align: left;
     height: 44px;
     width: 100%;
   }

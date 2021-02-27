@@ -5,11 +5,20 @@
   background-color: $bgColor !important;
 }
 .v-input {
-  margin-top: 20px;
+  margin-top: 0;
+}
+.theme--light.v-text-field > .v-input__control > .v-input__slot:before{
+  display: none;
 }
 .v-expansion-panel{
   padding:0 24px;
   margin-bottom: 10px;
+}
+.v-icon.notranslate.mdi.mdi-menu-down.theme--light{
+  font-size: 44px;
+}
+.v-text-field > .v-input__control > .v-input__slot:after{
+  display: none;
 }
 .v-card {
   padding: 24px

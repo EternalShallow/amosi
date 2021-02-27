@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import { getWeb3 } from '../utils/web3/getWeb3'
-import COIN_ABI from '../utils/web3/coinABI'
 import { TRANSACTION_ACTIONS } from '../utils/web3/constants'
 export default {
   computed: {
@@ -24,7 +23,6 @@ export default {
     }
   },
   mounted () {
-    const that = this
     window.ethereum.on('accountsChanged', function (accounts) {
       window.location.reload()
     })
@@ -39,22 +37,11 @@ export default {
         that.reject = reject
         that.resolve = resolve
       })
-      // console.log(window.Web3)
-      // if (typeof window.Web3 === 'undefined') {
-      //   setTimeout(function () {
-      //     that.initWeb3()
-      //   }, 500)
-      // }
       const { web3, web3_http, library } = await getWeb3()
       try {
         Vue.prototype.$web3_http = web3_http
         Vue.prototype.$web3 = web3
         Vue.prototype.$library = library
-        // YF-USDT 挖矿合约初始化
-        Vue.prototype.$YF = new web3_http.eth.Contract(
-          COIN_ABI.coin_abi_YF,
-          process.env.coin_address_YF
-        )
         let accounts
         if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
           // 请求账号授权
