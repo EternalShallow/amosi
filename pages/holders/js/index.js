@@ -12,10 +12,28 @@ export default {
       tabs: ['Holders', 'Writers', 'Token Holders', 'FAQ'],
       tab: 0,
       tradeTab: {
-        list: ['PUT', 'CALL'],
+        list: ['HETH', 'HBTC', 'HT'],
         index: 0
       },
       items: ['1day', '1week(7days)', '2week(14days)', '3week(21days)', '4week(28days)'],
+      holdTime: {
+        '1day': 1,
+        '1week(7days)': 7,
+        '2week(14days)': 14,
+        '3week(21days)': 21,
+        '4week(28days)': 28
+      },
+      optionsType: {
+        index: 0,
+        list: [{
+          name: 'PUT',
+          type: 1
+        },
+        {
+          name: 'CALL',
+          type: 2
+        }]
+      },
       tradeForm: {
         optionSize: '',
         selectList: ['1day', '1week(7days)', '2week(14days)', '3week(21days)', '4week(28days)'],
@@ -188,6 +206,9 @@ export default {
   methods: {
     selectTab (i) {
       this.tab = i
+    },
+    changeOptionType (i) {
+      this.optionsType.index = i
     },
     changeTradeTab (i) {
       this.tradeTab.index = i

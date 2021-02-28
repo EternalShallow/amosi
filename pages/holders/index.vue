@@ -41,11 +41,20 @@
               <div class="input-item">
                 <div class="display-flex box-center-Y input-item-title">
                   <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
+                  <div class="box-flex1">Option Type</div>
+                </div>
+                <div class="display-flex box-center currency-input option-type-list">
+                  <div class="option-type-item box-flex1 no-select" :class="{active: optionsType.index === i}" @click="changeOptionType(i)" v-for="(v, i) in optionsType.list" :key="`option-type-${i}`">{{v.name}}</div>
+                </div>
+              </div>
+              <div class="input-item">
+                <div class="display-flex box-center-Y input-item-title">
+                  <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
                   <div class="box-flex1">Option Size</div>
                 </div>
                 <div class="display-flex box-center-Y currency-input">
                   <y-number-input :point="18" v-model="tradeForm.optionSize"></y-number-input>
-                  <div class="currency">ETH</div>
+                  <div class="currency">{{tradeTab.list[tradeTab.index]}}</div>
                 </div>
               </div>
               <div class="input-item">
@@ -396,6 +405,23 @@ export { default } from './js/index'
                     border-radius: 0px 4px 4px 0px;
                     text-align: center;
                     line-height: 64px;
+                  }
+                  &.option-type-list{
+                    width: 100%;
+                    border-color: $emColor;
+                    text-align: center;
+                    height: 100%;
+                    padding-left: 0;
+                    .option-type-item{
+                      cursor: pointer;
+                      font-size: 20px;
+                      color: $emColor;
+                      line-height: 64px;
+                      &.active{
+                        background-color: $emColor;
+                        color: $colorFFF;
+                      }
+                    }
                   }
                 }
               }
