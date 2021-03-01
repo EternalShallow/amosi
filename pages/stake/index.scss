@@ -1,0 +1,219 @@
+@import "../../assets/css/main";
+
+.stake-box {
+  .earn-out-box {
+    padding: 78px 0 48px;
+    background-color: #F1F3F6;
+
+    .earn-box {
+      .sub-title-box {
+        .text1 {
+          font-size: 91px;
+          line-height: 111px;
+        }
+
+        .text2 {
+          font-size: 44px;
+          line-height: 46px;
+          color: $emColor;
+        }
+
+        .text3 {
+          font-size: 48px;
+          line-height: 53px;
+          color: $emColor;
+        }
+      }
+
+      .box1 {
+        width: 614px;
+
+        .deposit-item {
+          width: 302px;
+          height: 185px;
+          background-color: $colorFFF;
+          border-radius: 8px;
+          padding: 36px 15px 14px 23px;
+          background-position: top right;
+          background-repeat: no-repeat;
+          background-size: 88px 86px;
+
+          &:first-child {
+            background-image: url("../../assets/image/bg_earn_1@2x.png");
+          }
+
+          &:last-child {
+            background-image: url("../../assets/image/bg_earn_2@2x.png");
+          }
+
+          .number-box {
+            height: 48px;
+            line-height: 48px;
+            margin-top: 31px;
+            color: $block;
+            font-size: 40px;
+            font-weight: 600;
+
+            .currency-a {
+              font-size: 19px;
+              font-weight: 400;
+              margin-left: 66px;
+            }
+          }
+
+          .btn-deposit-out {
+            justify-content: flex-end;
+
+            .btn-deposit {
+              width: 79px;
+              height: 34px;
+              background-color: $emColor;
+              border-radius: 4px;
+              line-height: 34px;
+              cursor: pointer;
+              text-align: center;
+              color: $colorFFF;
+              font-weight: 500;
+              font-size: 12px;
+              font-family: DINCond-BlackAlternate;
+            }
+          }
+        }
+
+        .earn-info {
+          height: 360px;
+          margin-top: 8px;
+          background: $colorFFF;
+          border-radius: 8px;
+          padding: 26px 22px 0;
+          .rate-box{
+            .text{
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 14px;
+              color: $color666;
+            }
+            .rate-text{
+              margin-top: 5px;
+              font-size: 24px;
+              font-weight: 500;
+              line-height: 29px;
+              color: $emColor;
+            }
+            .rate-line-out{
+              margin-top: 6px;
+              width: 100%;
+              height: 16px;
+              background-color: #e6e6e6;
+              position: relative;
+              .rate-line{
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 30%;
+                background-color: $emColor;
+              }
+            }
+            .pl-box{
+              font-size: 24px;
+              font-family: DIN BlackAlternate;
+              font-weight: 500;
+              line-height: 58px;
+              color: $block;
+              .icon-img{
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+      }
+
+      .box2 {
+        width: 302px;
+        background-color: $colorFFF;
+        padding: 43px 17px 48px;
+        border-radius: 8px;
+        .desc{
+          font-size: 15px;
+          font-weight: 400;
+          line-height: 20px;
+          color: $block;
+        }
+      }
+    }
+  }
+  .historical-out-box{
+    padding: 72px 0;
+    background-color: $bgColor;
+    .historical-box{
+      .sub-title-box {
+        .text1{
+          padding-top: 16px;
+        }
+        .text1, .text2 {
+          font-size: 34px;
+          line-height: 41px;
+          color: $block;
+        }
+        .text2 {
+          color: $emColor;
+        }
+        .text3 {
+          font-size: 23px;
+          line-height: 28px;
+          color: $block;
+          padding-bottom: 16px;
+        }
+      }
+      .historical-item{
+        width: 300px;
+        height: 464px;
+        background: #F1F3F6;
+        border-radius: 8px;
+        padding: 80px 22px 29px;
+        .icon-img{
+          width: 96px;
+          height: 96px;
+          margin: 0 auto;
+        }
+        .number-box{
+          font-size: 48px;
+          font-weight: 600;
+          color: $block;
+          margin-top: 56px;
+          line-height: 57px;
+          .currency-b{
+            font-size: 19px;
+            font-weight: 400;
+            line-height: 23px;
+            margin-left: 22px;
+            padding-bottom: 11px;
+          }
+        }
+        .line{
+          height: 1px;
+          background-color: #e5e5e5;
+          width: 100%;
+        }
+        .title{
+          margin-top: 15px;
+          font-size: 18px;
+          font-family: DIN BlackAlternate;
+          font-weight: 600;
+          line-height: 30px;
+          color: $block;
+        }
+        .sub-title{
+          margin-top: 12px;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 20px;
+          color: $color666;
+        }
+      }
+    }
+  }
+}

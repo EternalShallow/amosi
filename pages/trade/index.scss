@@ -1,0 +1,210 @@
+@import "../../assets/css/main";
+.holder-box{
+  .trade-box{
+    padding-top: 88px;
+    padding-bottom: 130px;
+    .con-box{
+      .trade-tab{
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        .trade-tab-item{
+          text-align: center;
+          width: 140px;
+          font-weight: 600;
+          line-height: 52px;
+          position: relative;
+          color: $block;
+          padding-bottom: 14px;
+          cursor: pointer;
+          font-size: 30px;
+          &.active{
+            color: $emColor;
+          }
+          &.active:after{
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: $emColor;
+          }
+        }
+      }
+      .right-con{
+        margin-top: 46px;
+        .text-box{
+          width: 382px;
+          font-size: 20px;
+          line-height: 32px;
+          color: $color666;
+          .price-desc{
+            margin-top: 46px;
+            color: $block;
+            font-size: 15px;
+            line-height: 20px;
+          }
+        }
+        >.box-flex1{
+          margin-left: 27px;
+          .input-item{
+            margin-top: 28px;
+            &:first-child{
+              margin-top: 0;
+            }
+            .input-item-title{
+              font-size: 24px;
+              font-weight: 400;
+              line-height: 28px;
+              color: $block;
+              .input-item-title-icon{
+                width: 30px;
+                height: 30px;
+              }
+            }
+            .space-line{
+              width: 150px;
+            }
+            .currency-input{
+              margin-top: 15px;
+              height: 64px;
+              border: 1px solid #E6E6E6;
+              border-radius: 4px;
+              padding-left: 15px;
+              position: relative;
+              &.hold-select{
+                padding: 0 20px;
+              }
+              .my-number-input{
+                font-size: 18px;
+              }
+              .currency{
+                font-size: 18px;
+                font-weight: 400;
+                color: #303030;
+                width: 88px;
+                background-color: #E6E6E6;
+                border-radius: 0px 4px 4px 0px;
+                text-align: center;
+                line-height: 64px;
+              }
+              &.option-type-list{
+                width: 100%;
+                border-color: $emColor;
+                text-align: center;
+                height: 100%;
+                padding-left: 0;
+                .option-type-item{
+                  cursor: pointer;
+                  font-size: 20px;
+                  color: $emColor;
+                  line-height: 64px;
+                  &.active{
+                    background-color: $emColor;
+                    color: $colorFFF;
+                  }
+                }
+              }
+            }
+          }
+          .trade-data-box{
+            margin-top: 44px;
+            >.box-flex1{
+              font-size: 14px;
+              font-weight: 400;
+              color: #B7B7B7;
+              .number{
+                margin-top: 8px;
+                font-size: 20px;
+                font-weight: 400;
+                color: $block;
+              }
+            }
+          }
+          .trade-btn{
+            cursor: pointer;
+            margin-top: 44px;
+            width: 100%;
+            height: 48px;
+            background-color: $emColor;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 48px;
+            color: $colorFFF;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+  .contracts-out-box{
+    background-color: $emColor;
+    padding-top: 85px;
+    padding-bottom: 69px;
+    .contracts-box{
+      .sub-title-box{
+        margin-top: 80px;
+        border-bottom-color: $colorFFF;
+        .line1{
+          background-color: $colorFFF;
+        }
+        .line2{
+          background-color: $colorFFF;
+        }
+        .text1{
+          font-size: 91px;
+          line-height: 111px;
+        }
+        .text2{
+          font-size: 47px;
+          line-height: 57px;
+          color: $colorFFF;
+        }
+        .text3{
+          font-size: 34px;
+          line-height: 48px;
+          color: $colorFFF;
+        }
+      }
+      .con-box{
+        .contract-tab{
+          border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+          .contract-tab-item{
+            text-align: center;
+            width: 190px;
+            font-weight: 600;
+            line-height: 52px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            padding-bottom: 14px;
+            cursor: pointer;
+            font-size: 30px;
+            &.active{
+              color: $colorFFF;
+            }
+            &.active:after{
+              content: '';
+              position: absolute;
+              bottom: -2px;
+              left: 0;
+              width: 100%;
+              height: 2px;
+              background-color: $colorFFF;
+            }
+          }
+        }
+        .data-list{
+          .data-item{
+            height: 46px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            color: $colorFFF;
+            &.data-head{
+              color: rgba(255, 255, 255, 0.6);
+            }
+          }
+        }
+      }
+    }
+  }
+}
