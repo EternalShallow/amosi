@@ -10,6 +10,29 @@
 .theme--light.v-text-field > .v-input__control > .v-input__slot:before{
   display: none;
 }
+.mdi-radiobox-blank::before{
+  color: #b7b7b7 !important;
+}
+.mdi-radiobox-marked::before {
+  color: $emColor !important;
+}
+.v-radio.theme--light .theme--light.v-label{
+  color: $block !important;
+  font-size: 24px;
+}
+.v-radio.theme--light.v-item--active .theme--light.v-label{
+  color: $emColor !important;
+}
+.v-input--switch__track, .v-input--selection-controls__input, .v-input__control{
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.v-input--selection-controls.v-input{
+  flex: auto;
+  margin-left: 150px;
+}
 .v-expansion-panel{
   padding:0 24px;
   margin-bottom: 10px;
@@ -70,13 +93,6 @@
 .v-input--selection-controls__ripple:before {
   content: none;
   display: none;
-}
-
-.v-input--switch__track, .v-input--selection-controls__input, .v-input__control {
-  width: 64px !important;
-  height: 36px !important;
-  border-radius: 18px !important;
-  opacity: 1 !important;
 }
 
 .v-input--switch__track {

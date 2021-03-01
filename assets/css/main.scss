@@ -136,6 +136,45 @@
   margin-right: auto;
   margin-left: auto;
 }
+.main{
+  height: 100vh;
+  overflow-y: auto;
+  >.content{
+    .con-box {
+      margin-left: 110px;
+    }
+  }
+}
+.sub-title-box{
+  text-align: center;
+  width: 175px;
+  padding: 10px 0 12px;
+  border-bottom: 3px solid $block;
+  font-family: Impact;
+  color: $block;
+  .line1{
+    width: 32px;
+    height: 7px;
+    background: $emColor;
+  }
+  .line2{
+    height: 2px;
+    background: $block;
+  }
+  .text1{
+    font-size: 44px;
+    line-height: 69px;
+  }
+  .text2{
+    font-size: 57px;
+    line-height: 69px;
+    color: $emColor;
+  }
+  .text3{
+    font-size: 23px;
+  }
+}
+
 .no-select{
   -webkit-touch-callout: none;
   -webkit-user-select: none;

@@ -9,7 +9,41 @@ export default {
   data () {
     return {
       account: null,
-      all_transaction: []
+      all_transaction: [],
+      tabs: ['Trade', 'Stake', 'Reward'],
+      tab: 0,
+      joinList: [
+        {
+          icon: require('../../assets/image/logo@2x.png'),
+          title: 'TWItter',
+          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
+        },
+        {
+          icon: require('../../assets/image/logo@2x.png'),
+          title: 'Telegram',
+          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
+        },
+        {
+          icon: require('../../assets/image/logo@2x.png'),
+          title: 'Discord',
+          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
+        },
+        {
+          icon: require('../../assets/image/logo@2x.png'),
+          title: 'GitHub',
+          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
+        },
+        {
+          icon: require('../../assets/image/logo@2x.png'),
+          title: 'Medium',
+          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
+        },
+        {
+          icon: require('../../assets/image/logo@2x.png'),
+          title: 'DeFi Pulse',
+          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
+        }
+      ]
     }
   },
   computed: {
@@ -41,6 +75,9 @@ export default {
     }
   },
   methods: {
+    selectTab (i) {
+      this.tab = i
+    },
     setAccount (val) {
       this.account = this.$store.state.accounts[0]
     },

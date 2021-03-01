@@ -10,8 +10,6 @@ export default {
     return {
       tokenContract: null,
       account: '',
-      tabs: ['Trade', 'Stake', 'Reward'],
-      tab: 0,
       tradeTab: {
         list: ['HETH', 'HBTC', 'HT'],
         index: 0
@@ -24,17 +22,7 @@ export default {
         '3week(21days)': 21,
         '4week(28days)': 28
       },
-      optionsType: {
-        index: 0,
-        list: [{
-          name: 'PUT',
-          type: 1
-        },
-        {
-          name: 'CALL',
-          type: 2
-        }]
-      },
+      optionsType: '1',
       tradeForm: {
         optionSize: '',
         strikePrice: '',
@@ -173,43 +161,15 @@ export default {
           share: 90
         }
       ],
-      price_HT: 14,
-      joinList: [
-        {
-          icon: require('../../../assets/image/yswap@2x.png'),
-          title: 'TWItter',
-          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
-        },
-        {
-          icon: require('../../../assets/image/yswap@2x.png'),
-          title: 'Telegram',
-          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
-        },
-        {
-          icon: require('../../../assets/image/yswap@2x.png'),
-          title: 'Discord',
-          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
-        },
-        {
-          icon: require('../../../assets/image/yswap@2x.png'),
-          title: 'GitHub',
-          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
-        },
-        {
-          icon: require('../../../assets/image/yswap@2x.png'),
-          title: 'Medium',
-          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
-        },
-        {
-          icon: require('../../../assets/image/yswap@2x.png'),
-          title: 'DeFi Pulse',
-          text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
-        }
-      ]
+      price_HT: 14
     }
   },
   watch: {
     'tradeForm.hold': function (val) {
+      console.log(val)
+      this.getFees()
+    },
+    optionsType: function (val) {
       console.log(val)
       this.getFees()
     }
@@ -218,13 +178,6 @@ export default {
     this.initPage()
   },
   methods: {
-    selectTab (i) {
-      this.tab = i
-    },
-    changeOptionType (i) {
-      this.optionsType.index = i
-      this.getFees()
-    },
     changeTradeTab (i) {
       this.tradeTab.index = i
       this.getFees()
@@ -246,7 +199,7 @@ export default {
           this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
           this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
           this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-          this.optionsType.list[this.optionsType.index].type)
+          this.optionsType)
         this.fees = {
           total: fees.total.toString(),
           settlementFee: fees.settlementFee.toString(),
@@ -256,7 +209,7 @@ export default {
           totalFee: parseFloat(this.$web3_http.utils.fromWei(fees.total.toString(), 'ether'))
         }
         this.fees.totalCost = parseFloat(this.keepPoint(this.price_HT * this.fees.totalFee, 2))
-        if (this.optionsType.list[this.optionsType.index].type === 1) {
+        if (this.optionsType === '1') {
           this.fees.breakEven = parseFloat(this.keepPoint(this.fees.strikePrice + (this.fees.totalCost / this.tradeForm.optionSize), 2))
         } else {
           this.fees.breakEven = parseFloat(this.keepPoint(this.fees.strikePrice - (this.fees.totalCost / this.tradeForm.optionSize), 2))
@@ -275,7 +228,7 @@ export default {
         this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
         this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
         this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-        this.optionsType.list[this.optionsType.index].type
+        this.optionsType
       )
       try {
         await useContractMethods({
@@ -283,9 +236,9 @@ export default {
           methodName: 'create',
           parameters: [
             this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
-            '99',
+            '1',
             this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-            this.optionsType.list[this.optionsType.index].type
+            this.optionsType
           ]
         })
       } catch (e) {
