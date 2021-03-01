@@ -1,5 +1,5 @@
 <template>
-  <div class="stake-box">
+  <div class="reward-box">
     <div class="aa">adasd</div>
   </div>
 </template>
@@ -9,7 +9,7 @@ export { default } from './js/index'
 </script>
 
 <style scoped lang="scss">
-  .stake-box{
+  .reward-box{
 
   }
 </style>

@@ -21,6 +21,30 @@
           <div class="connect-wallet no-select">CONNECT  WALLET</div>
         </div>
         <nuxt />
+        <div class="document-out-box">
+          <div class="document-box center-width display-flex box-center-start">
+            <div class="sub-title-box">
+              <div class="display-flex box-center-end">
+                <div class="line1"></div>
+                <div class="box-flex1 line2"></div>
+              </div>
+              <div class="text1">DOCUMENTS</div>
+              <div class="text2">Hegic Protocol</div>
+              <div class="text3">Learn Options Basics</div>
+            </div>
+            <div class="box-flex1 con-box display-flex box-center-Y document-list">
+              <div class="box-flex1 document-item">
+                <div class="document-title">Hegic protocol Whitpaper</div>
+                <div>My Spring Festival To tell you the truth, I don't like the Spring Festival at all. When I was young I liked it very muchLost and Found My name is Jack.I picked up a couple of yellow keys in the library.If you are the owner,please call me at i have a friend who is falling in love. she honestly claims the sky is blue My Spring Festival To tell you the truth, I don't like the Spring Festival at all. When I was young ...
+                </div>
+              </div>
+              <div class="box-flex1 document-item">
+                <div class="document-title">GitBook：learn Options Basics</div>
+                <div>My Spring Festival To tell you the truth, I don't like the Spring Festival at all. When I was young I liked it very muchLost and Found My name is Jack.I picked up a couple of yellow keys in the library.If you are the owner,please call me at i have a friend who is falling in love. she honestly claims the sky is blue My Spring Festival To tell you the truth, I don't like the Spring Festival at all. When I was young ...</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="join-box center-width display-flex box-center-start">
           <div class="sub-title-box">
             <div class="display-flex box-center-end">
@@ -209,6 +233,63 @@ export { default } from './js/default'
         cursor: pointer;
       }
     }
+  .document-out-box{
+    padding: 74px 0 56px;
+    background-color: #F1F3F6;
+    .document-box{
+      .sub-title-box{
+        padding-bottom: 11px;
+        .text1{
+          font-size: 34px;
+          color: $emColor;
+          line-height: 71px;
+        }
+        .text2{
+          width: 100%;
+          height: 44px;
+          text-align: center;
+          background-color: $block;
+          font-size: 24px;
+          line-height: 44px;
+          color: $colorFFF;
+        }
+        .text3{
+          margin-top: 8px;
+          font-size: 18px;
+          color: $block;
+        }
+      }
+      .document-list{
+        .document-item{
+          padding: 55px 24px;
+          width: 454px;
+          height: 415px;
+          border-radius: 8px;
+          background-color: $bgColor;
+          font-size: 18px;
+          line-height: 32px;
+          color: $color666;
+          background-position: right top;
+          background-repeat: no-repeat;
+          background-size: 195px 190px;
+          &:last-child{
+            margin-left: 16px;
+            background-image: url("../assets/image/bg_document_2@2x.png");
+          }
+          &:first-child{
+            background-image: url("../assets/image/bg_document_1@2x.png");
+          }
+          .document-title{
+            font-size: 24px;
+            line-height: 30px;
+            color: $block;
+            font-weight: 600;
+            padding-bottom: 26px;
+          }
+        }
+      }
+    }
+  }
   .join-box{
     padding: 104px 0 146px;
     border-bottom: 1px solid #B7B7B7;
