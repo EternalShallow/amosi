@@ -3,13 +3,14 @@ import { BigNumber } from '@ethersproject/bignumber'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods } from '../../../utils/web3/contractEvent'
 import { approveEvent } from '../../../utils/web3/contractApprove'
+
 let that
 export default {
   data () {
     return {
       tokenContract: null,
       account: '',
-      tabs: ['Holders', 'Writers', 'Token Holders', 'FAQ'],
+      tabs: ['Trade', 'Stake', 'Reward'],
       tab: 0,
       tradeTab: {
         list: ['HETH', 'HBTC', 'HT'],
@@ -36,8 +37,14 @@ export default {
       },
       tradeForm: {
         optionSize: '',
+        strikePrice: '',
         selectList: ['1day', '1week(7days)', '2week(14days)', '3week(21days)', '4week(28days)'],
         hold: '1day'
+      },
+      fees: {
+        strikePrice: 0,
+        totalCost: 0,
+        breakEven: 0
       },
       contractTab: {
         list: ['ACTIVE', 'HISTORY'],
@@ -48,124 +55,125 @@ export default {
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         },
         {
           type: 'type',
           size: 21321,
-          price_strike: 123.12,
-          price_now: 235.1,
-          break_even: 21,
-          p_l: 12,
-          placed_at: 'akss',
-          expire_in: '2021.12.2',
+          strikePrice: 123.12,
+          nowPrice: 235.1,
+          breakEven: 21,
+          PL: 12,
+          placedAt: 'akss',
+          expireIn: '2021.12.2',
           exercise: 1,
           share: 90
         }
       ],
+      price_HT: 14,
       joinList: [
         {
           icon: require('../../../assets/image/yswap@2x.png'),
@@ -200,6 +208,12 @@ export default {
       ]
     }
   },
+  watch: {
+    'tradeForm.hold': function (val) {
+      console.log(val)
+      this.getFees()
+    }
+  },
   mounted () {
     this.initPage()
   },
@@ -209,12 +223,74 @@ export default {
     },
     changeOptionType (i) {
       this.optionsType.index = i
+      this.getFees()
     },
     changeTradeTab (i) {
       this.tradeTab.index = i
+      this.getFees()
     },
     changeContractTab (i) {
       this.contractTab.index = i
+    },
+    changeVal (val) {
+      this.getFees()
+    },
+    async getFees () {
+      console.log(!this.tradeForm.strikePrice || !this.tradeForm.optionSize)
+      if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
+        return
+      }
+      const tokenContract = useTokenContract(process.env.future_HT, COIN_ABI.futures_HT)
+      try {
+        const fees = await tokenContract.fees(
+          this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
+          this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
+          this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
+          this.optionsType.list[this.optionsType.index].type)
+        this.fees = {
+          total: fees.total.toString(),
+          settlementFee: fees.settlementFee.toString(),
+          strikeFee: fees.strikeFee.toString(),
+          periodFee: fees.periodFee.toString(),
+          strikePrice: parseFloat(this.tradeForm.strikePrice),
+          totalFee: parseFloat(this.$web3_http.utils.fromWei(fees.total.toString(), 'ether'))
+        }
+        this.fees.totalCost = parseFloat(this.keepPoint(this.price_HT * this.fees.totalFee, 2))
+        if (this.optionsType.list[this.optionsType.index].type === 1) {
+          this.fees.breakEven = parseFloat(this.keepPoint(this.fees.strikePrice + (this.fees.totalCost / this.tradeForm.optionSize), 2))
+        } else {
+          this.fees.breakEven = parseFloat(this.keepPoint(this.fees.strikePrice - (this.fees.totalCost / this.tradeForm.optionSize), 2))
+        }
+        console.log(this.fees)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async buyOptions () {
+      if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
+        return
+      }
+      const tokenContract = useTokenContract(process.env.future_HT, COIN_ABI.futures_HT)
+      console.log(
+        this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
+        this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
+        this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
+        this.optionsType.list[this.optionsType.index].type
+      )
+      try {
+        await useContractMethods({
+          contract: tokenContract,
+          methodName: 'create',
+          parameters: [
+            this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
+            '99',
+            this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
+            this.optionsType.list[this.optionsType.index].type
+          ]
+        })
+      } catch (e) {
+        console.log(e)
+      }
     },
     async connectWallet () {
       const init_wab3 = await this.initWeb3()

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { mapState } from 'vuex'
 import { getWeb3 } from '../utils/web3/getWeb3'
 import { TRANSACTION_ACTIONS } from '../utils/web3/constants'
+import { keepPoint, milliFormat } from '../utils/function'
 export default {
   computed: {
     'store.state.accounts': function () {
@@ -75,6 +76,12 @@ export default {
         that.resolve(err)
         return that.promise
       }
+    },
+    milliFormat (num) {
+      return milliFormat(num)
+    },
+    keepPoint (num, point, isRound) {
+      return keepPoint(num, point, isRound)
     },
     initTransactions () {
       this.$store.dispatch('updateTransactions', {

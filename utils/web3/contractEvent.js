@@ -77,8 +77,10 @@ export async function useContractMethods ({ contract, methodName, parameters, su
     method = contract[methodName](parameters[0], parameters[1])
   } else if (parameters.length === 3) {
     method = contract[methodName](parameters[0], parameters[1], parameters[2])
-  } else if (parameters.length === 3) {
-    method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[2])
+  } else if (parameters.length === 4) {
+    method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3])
+  } else if (parameters.length === 5) {
+    method = contract[methodName](parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
   }
   method.then((response) => {
     useCallback(response, {

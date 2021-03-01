@@ -38,32 +38,41 @@
               <div class="price-desc">Option contract value dynamics depending on the price of an underlying:</div>
             </div>
             <div class="box-flex1">
+<!--              <div class="input-item">-->
+<!--                <div class="display-flex box-center-Y input-item-title">-->
+<!--                  <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>-->
+<!--                  <div class="box-flex1">Option Type</div>-->
+<!--                </div>-->
+<!--                <div class="display-flex box-center currency-input option-type-list">-->
+<!--                  <div class="option-type-item box-flex1 no-select" :class="{active: optionsType.index === i}" @click="changeOptionType(i)" v-for="(v, i) in optionsType.list" :key="`option-type-${i}`">{{v.name}}</div>-->
+<!--                </div>-->
+<!--              </div>-->
               <div class="input-item">
                 <div class="display-flex box-center-Y input-item-title">
-                  <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
-                  <div class="box-flex1">Option Type</div>
-                </div>
-                <div class="display-flex box-center currency-input option-type-list">
-                  <div class="option-type-item box-flex1 no-select" :class="{active: optionsType.index === i}" @click="changeOptionType(i)" v-for="(v, i) in optionsType.list" :key="`option-type-${i}`">{{v.name}}</div>
-                </div>
-              </div>
-              <div class="input-item">
-                <div class="display-flex box-center-Y input-item-title">
-                  <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
-                  <div class="box-flex1">Option Size</div>
+                  <div class="display-flex box-center-Y">
+                    <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
+                    <div>Option Size</div>
+                  </div>
+                  <div class="box-flex1">
+                    <v-radio
+                      label="success"
+                      color="success"
+                      value="success"
+                    ></v-radio>
+                  </div>
                 </div>
                 <div class="display-flex box-center-Y currency-input">
-                  <y-number-input :point="18" v-model="tradeForm.optionSize"></y-number-input>
+                  <y-number-input :point="18" v-model="tradeForm.optionSize" @input="changeVal"></y-number-input>
                   <div class="currency">{{tradeTab.list[tradeTab.index]}}</div>
                 </div>
               </div>
               <div class="input-item">
                 <div class="display-flex box-center-Y input-item-title">
                   <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
-                  <div class="box-flex1">Strike  Prick</div>
+                  <div class="box-flex1">Strike  Price</div>
                 </div>
                 <div class="display-flex box-center-Y currency-input">
-                  <y-number-input :point="18" v-model="tradeForm.optionSize"></y-number-input>
+                  <y-number-input :point="18" v-model="tradeForm.strikePrice" @input="changeVal"></y-number-input>
                   <div class="currency">USD</div>
                 </div>
               </div>
@@ -82,18 +91,18 @@
               <div class="display-flex box-center-Y trade-data-box">
                 <div class="box-flex1">
                   <div>Strike Price</div>
-                  <div class="number">$3,564</div>
+                  <div class="number">${{milliFormat(fees.strikePrice)}}</div>
                 </div>
                 <div class="box-flex1">
                   <div>Total Cost</div>
-                  <div class="number">$3,437,564</div>
+                  <div class="number">${{milliFormat(fees.totalCost)}}</div>
                 </div>
                 <div class="box-flex1">
                   <div>Break-even</div>
-                  <div class="number">$3,437,433</div>
+                  <div class="number">${{milliFormat(fees.breakEven)}}</div>
                 </div>
               </div>
-              <div class="trade-btn">WAITING FOR CONNECTION</div>
+              <div class="trade-btn no-select" @click="buyOptions">WAITING FOR CONNECTION</div>
             </div>
           </div>
         </div>
@@ -120,12 +129,12 @@
               <div class="data-item display-flex box-center-Y" v-for="(v, i) in contractDataList" :key="`data-item${i}`" >
                 <div class="box-flex1">{{v.type}}</div>
                 <div class="box-flex1">{{v.size}}</div>
-                <div class="box-flex1">{{v.price_strike}}</div>
-                <div class="box-flex1">{{v.price_now}}</div>
-                <div class="box-flex1">{{v.break_even}}</div>
-                <div class="box-flex1">{{v.p_l}}</div>
-                <div class="box-flex1">{{v.placed_at}}</div>
-                <div class="box-flex1">{{v.expire_in}}</div>
+                <div class="box-flex1">{{v.strikePrice}}</div>
+                <div class="box-flex1">{{v.nowPrice}}</div>
+                <div class="box-flex1">{{v.breakEven}}</div>
+                <div class="box-flex1">{{v.PL}}</div>
+                <div class="box-flex1">{{v.placedAt}}</div>
+                <div class="box-flex1">{{v.expireIn}}</div>
                 <div class="box-flex1">{{v.exercise}}</div>
                 <div class="box-flex1">{{v.share}}</div>
               </div>
@@ -278,7 +287,7 @@ export { default } from './js/index'
         margin: 78px auto 0;
         width: 346px;
         height: 60px;
-        background: #13C5A2;
+        background-color: $emColor;
         opacity: 1;
         text-align: center;
         line-height: 60px;
@@ -440,6 +449,7 @@ export { default } from './js/index'
                 }
               }
               .trade-btn{
+                cursor: pointer;
                 margin-top: 44px;
                 width: 100%;
                 height: 48px;
