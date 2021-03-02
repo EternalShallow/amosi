@@ -21,19 +21,10 @@
             <div class="price-desc">Option contract value dynamics depending on the price of an underlying:</div>
           </div>
           <div class="box-flex1">
-<!--              <div class="input-item">-->
-<!--                <div class="display-flex box-center-Y input-item-title">-->
-<!--                  <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>-->
-<!--                  <div class="box-flex1">Option Type</div>-->
-<!--                </div>-->
-<!--                <div class="display-flex box-center currency-input option-type-list">-->
-<!--                  <div class="option-type-item box-flex1 no-select" :class="{active: optionsType.index === i}" @click="changeOptionType(i)" v-for="(v, i) in optionsType.list" :key="`option-type-${i}`">{{v.name}}</div>-->
-<!--                </div>-->
-<!--              </div>-->
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
                 <div class="display-flex box-center-Y">
-                  <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
+                  <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
                   <div>Option Size</div>
                 </div>
                 <v-radio-group
@@ -59,7 +50,7 @@
             </div>
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
                 <div class="box-flex1">Strike  Price</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
@@ -69,7 +60,7 @@
             </div>
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
                 <div class="box-flex1">Period of Holding</div>
               </div>
               <div class="display-flex box-center-Y currency-input hold-select">

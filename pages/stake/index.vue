@@ -169,7 +169,7 @@
           <div class="box-flex1">
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
                 <div class="box-flex1">Amount for Providing to the pool:</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
@@ -179,7 +179,7 @@
             </div>
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/yswap@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
                 <div class="box-flex1">You Will Receive</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
