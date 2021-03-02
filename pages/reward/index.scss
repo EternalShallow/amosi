@@ -1,0 +1,126 @@
+@import "../../assets/css/main";
+.reward-box{
+  .user-info{
+    position: relative;
+    margin-top: 96px;
+    height: 233px;
+    background-color: #F1F3F6;
+    border-radius: 4px;
+    padding-left: 244px;
+    padding-top: 30px;
+    .avatar-img{
+      position: absolute;
+      left: 80px;
+      top: -39px;
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      z-index: 10;
+      img{
+        border-radius: 50%;
+      }
+    }
+    .user-name{
+      font-size: 46px;
+      font-family: Impact;
+      font-weight: 400;
+      line-height: 56px;
+      color: $block;
+    }
+    .balance-list{
+      margin-top: 25px;
+      .balance-item{
+        text-align: center;
+        margin-left: 100px;
+        &:first-child{
+          margin-left: 12px;
+        }
+        .title{
+          height: 38px;
+          line-height: 19px;
+          font-size: 16px;
+          color: $color999;
+        }
+        .amount{
+          margin-top: 5px;
+          height: 38px;
+          font-size: 32px;
+          font-weight: 500;
+          line-height: 38px;
+          color: $block;
+        }
+      }
+    }
+  }
+  .interface-box{
+    margin-top: 160px;
+    padding-bottom: 108px;
+    .sub-title-box{
+      .text1{
+        font-size: 35px;
+        font-family: Impact;
+        font-weight: 400;
+        line-height: 42px;
+        color: $block;
+      }
+      .text2{
+        font-size: 39px;
+        font-family: Impact;
+        font-weight: 400;
+        line-height: 47px;
+        color: $emColor;
+
+      }
+      .text3{
+        font-size: 22px;
+        font-family: Impact;
+        font-weight: 400;
+        line-height: 27px;
+        color: $block;
+
+      }
+      .text4{
+        font-size: 28px;
+        font-family: Impact;
+        font-weight: 400;
+        line-height: 34px;
+        color: $block;
+        span{
+          color: $emColor;
+        }
+      }
+    }
+    .interface-tab{
+      width: 100%;
+      padding-top: 21px;
+      padding-bottom: 27px;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+      .interface-tab-item{
+        margin-left: 50px;
+        text-align: center;
+        position: relative;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        color: $block;
+        cursor: pointer;
+        &:first-child{
+          margin-left: 0;
+        }
+        &.active{
+          color: $emColor;
+        }
+        &.active:after{
+          content: '';
+          position: absolute;
+          width: 50px;
+          height: 2px;
+          background-color: $emColor;
+          left: 50%;
+          margin-left: -25px;
+          bottom: -29px;
+        }
+      }
+    }
+  }
+}
