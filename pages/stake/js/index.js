@@ -38,7 +38,11 @@ export default {
           name: 'ETH POOL',
           desc: 'Provide ETH to this pool to start selling ETH call and put options and earning yield on ETH'
         }
-      ]
+      ],
+      liquidity: {
+        list: ['WBTC', 'ETH'],
+        index: 0
+      }
     }
   },
   mounted () {
@@ -46,6 +50,9 @@ export default {
   },
   methods: {
     setAccount () {
+    },
+    changeLiquidity (i) {
+      this.liquidity.index = i
     }
   }
 }
