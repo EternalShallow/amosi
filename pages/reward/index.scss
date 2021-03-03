@@ -57,7 +57,7 @@
     padding-bottom: 108px;
     .sub-title-box{
       .text1{
-        font-size: 35px;
+        font-size: 33px;
         font-family: Impact;
         font-weight: 400;
         line-height: 42px;
@@ -94,6 +94,7 @@
       width: 100%;
       padding-top: 21px;
       padding-bottom: 27px;
+      height: 96px;
       border-bottom: 2px solid rgba(0, 0, 0, 0.1);
       .interface-tab-item{
         margin-left: 50px;
@@ -102,6 +103,7 @@
         font-size: 16px;
         font-weight: 400;
         line-height: 22px;
+        height: 44px;
         color: $block;
         cursor: pointer;
         &:first-child{
@@ -120,6 +122,331 @@
           margin-left: -25px;
           bottom: -29px;
         }
+      }
+    }
+    .item-title{
+      margin-top: 45px;
+      font-size: 43px;
+      font-family: Impact;
+      font-weight: 400;
+      line-height: 52px;
+      color: $block;
+    }
+    .item-desc{
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 30px;
+      color: $color666;
+
+    }
+    .end-tab{
+      width: 100%;
+      padding-top: 45px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+      .end-item{
+        width: 140px;
+        text-align: center;
+        position: relative;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        color: $block;
+        cursor: pointer;
+        &:first-child{
+          margin-left: 0;
+        }
+        &.active{
+          color: $emColor;
+        }
+        &.active:after{
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 2px;
+          background-color: $emColor;
+          left: 0;
+          bottom: -17px;
+        }
+      }
+    }
+    .total-box{
+      margin-top: 36px;
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 18px;
+      color: $block;
+      .total-title{
+        font-size: 43px;
+        font-family: Impact;
+        font-weight: 400;
+        line-height: 52px;
+        margin-right: 20px;
+      }
+      .currency-text{
+        margin-left: 18px;
+      }
+    }
+    .total-list{
+      margin-top: 24px;
+      .total-item{
+        width: 302px;
+        margin-left: 10px;
+        padding: 88px 22px 36px;
+        background-color: #F1F3F6;
+        border-radius: 8px;
+        .icon-img{
+          width: 96px;
+          height: 96px;
+          margin: 0 auto;
+        }
+        .number-box{
+          font-size: 48px;
+          font-weight: 600;
+          color: $block;
+          margin-top: 56px;
+          line-height: 57px;
+          .currency-b{
+            font-size: 19px;
+            font-weight: 400;
+            line-height: 23px;
+            margin-left: 22px;
+            padding-bottom: 11px;
+          }
+        }
+        .line{
+          margin-top: 16px;
+          height: 1px;
+          width: 100%;
+          background-color: #E5E5E5;
+        }
+        .title{
+          margin-top: 15px;
+          height: 55px;
+          width: 100%;
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 26px;
+        }
+        .sub-title{
+          margin-top: 24px;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 20px;
+          height: 60px;
+          color: $color666;
+        }
+        .btn-total{
+          cursor: pointer;
+          margin-top: 16px;
+          width: 100%;
+          height: 48px;
+          background-color: $emColor;
+          border-radius: 4px;
+          line-height: 48px;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 400;
+          color: $colorFFF;
+        }
+        &.stake-earn{
+          padding-bottom: 67px;
+          .title{
+            height: auto;
+          }
+          .sub-title{
+            margin-top: 14px;
+          }
+          .btn-total{
+            background-color: #13C5A2;
+          }
+        }
+      }
+    }
+    .utilization-data{
+      height: 430px;
+      overflow: scroll;
+      .utilization-item{
+        font-size: 16px;
+        font-weight: 500;
+        color: $block;
+        width: 100%;
+        height: 44px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+        text-align: center;
+        &.header{
+          font-weight: 400;
+          font-size: 14px;
+          border-bottom: none;
+          color: $block;
+        }
+      }
+    }
+    .bound-info{
+      margin-top: 36px;
+      padding: 36px 0;
+      background-color: #F1F3F6;
+      border-radius: 8px;
+      >.box-flex1{
+        padding-left: 22px;
+        .title{
+          font-size: 18px;
+          font-family: DIN BlackAlternate;
+          font-weight: 400;
+          line-height: 23px;
+          color: $color999;
+        }
+        .number-box{
+          margin-top: 26px;
+          font-size: 40px;
+          font-weight: 600;
+          color: $block;
+          line-height: 48px;
+          .currency-b{
+            font-size: 19px;
+            margin-left: 48px;
+          }
+        }
+      }
+    }
+    .title-curw{
+      margin-top: 36px;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 29px;
+      color: $block;
+    }
+    .liquidity-main{
+      margin-top: 30px;
+      .liquidity-text-box{
+        width: 380px;
+        margin-right: 27px;
+        .liquidity-text-item{
+          font-size: 24px;
+          font-weight: 500;
+          line-height: 30px;
+          color: $block;
+          &:last-child{
+            margin-top: 24px;
+          }
+          .icon-img{
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+          }
+          .text-desc{
+            margin-top: 12px;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+            color: $color666;
+          }
+        }
+      }
+      .input-item{
+        margin-top: 28px;
+        &:first-child{
+          margin-top: 0;
+        }
+        .input-item-title{
+          font-size: 24px;
+          font-weight: 400;
+          line-height: 28px;
+          color: $block;
+          .input-item-title-icon{
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+          }
+        }
+        .space-line{
+          width: 150px;
+        }
+        .currency-input{
+          margin-top: 15px;
+          height: 64px;
+          border: 1px solid #E6E6E6;
+          border-radius: 4px;
+          padding-left: 15px;
+          position: relative;
+          &.hold-select{
+            padding: 0 20px;
+          }
+          .my-number-input{
+            font-size: 18px;
+          }
+          .currency{
+            font-size: 14px;
+            font-weight: 400;
+            color: #303030;
+            width: 88px;
+            background-color: #E6E6E6;
+            border-radius: 0px 4px 4px 0px;
+            text-align: center;
+            line-height: 64px;
+          }
+          &.option-type-list{
+            width: 100%;
+            border-color: $emColor;
+            text-align: center;
+            height: 100%;
+            padding-left: 0;
+            .option-type-item{
+              cursor: pointer;
+              font-size: 20px;
+              color: $emColor;
+              line-height: 64px;
+              &.active{
+                background-color: $emColor;
+                color: $colorFFF;
+              }
+            }
+          }
+        }
+      }
+      .btn-liquidity-deposit{
+        cursor: pointer;
+        margin-top: 58px;
+        width: 100%;
+        height: 48px;
+        background-color: $emColor;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 48px;
+        color: $colorFFF;
+        text-align: center;
+      }
+    }
+    .token-box{
+      margin-top: 26px;
+      width: 100%;
+      height: 300px;
+      background-color: #F1F3F6;
+      border-radius: 8px;
+      padding: 36px 24px;
+      box-sizing: border-box;
+      .token-title{
+        font-size: 18px;
+        font-family: DIN BlackAlternate;
+        font-weight: 400;
+        line-height: 23px;
+        color: $color999;
+      }
+      .number-box{
+        margin-top: 26px;
+        font-size: 40px;
+        font-weight: 600;
+        color: $block;
+        line-height: 48px;
+        .currency-b{
+          font-size: 19px;
+          margin-left: 48px;
+        }
+      }
+      .token-2{
+        margin-top: 42px;
       }
     }
   }
