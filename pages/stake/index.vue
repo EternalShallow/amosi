@@ -54,6 +54,7 @@
                   <div class="icon-img"><img src="../../assets/image/icon_echart@2x.png" alt=""></div>
                   <div>P&L DYNAMICS</div>
                 </div>
+                <div class="stake-chart" id="stakeChart"></div>
               </div>
             </div>
           </div>
