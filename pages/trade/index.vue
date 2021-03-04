@@ -25,7 +25,7 @@
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
                 <div class="display-flex box-center-Y">
-                  <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
+                  <div class="input-item-title-icon"><img src="../../assets/image/icon_trade_1@2x.png" alt=""></div>
                   <div>Option Size</div>
                 </div>
                 <v-radio-group
@@ -51,7 +51,7 @@
             </div>
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/icon_trade_2@2x.png" alt=""></div>
                 <div class="box-flex1">Strike  Price</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
@@ -61,7 +61,7 @@
             </div>
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/icon_trade_3@2x.png" alt=""></div>
                 <div class="box-flex1">Period of Holding</div>
               </div>
               <div class="display-flex box-center-Y currency-input hold-select">

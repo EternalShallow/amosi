@@ -10,36 +10,45 @@ export default {
     return {
       account: null,
       all_transaction: [],
-      tabs: ['Trade', 'Stake', 'Reward'],
+      tabs: [{
+        name: 'Trade',
+        path: 'trade'
+      }, {
+        name: 'Stake',
+        path: 'stake'
+      }, {
+        name: 'Reward',
+        path: 'reward'
+      }],
       tab: 0,
       joinList: [
         {
-          icon: require('../../assets/image/logo@2x.png'),
+          icon: require('../../assets/image/icon_join_1@2x.png'),
           title: 'TWItter',
           text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
         },
         {
-          icon: require('../../assets/image/logo@2x.png'),
+          icon: require('../../assets/image/icon_join_2@2x.png'),
           title: 'Telegram',
           text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
         },
         {
-          icon: require('../../assets/image/logo@2x.png'),
+          icon: require('../../assets/image/icon_join_3@2x.png'),
           title: 'Discord',
           text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
         },
         {
-          icon: require('../../assets/image/logo@2x.png'),
+          icon: require('../../assets/image/icon_join_4@2x.png'),
           title: 'GitHub',
           text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
         },
         {
-          icon: require('../../assets/image/logo@2x.png'),
+          icon: require('../../assets/image/icon_join_5@2x.png'),
           title: 'Medium',
           text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
         },
         {
-          icon: require('../../assets/image/logo@2x.png'),
+          icon: require('../../assets/image/icon_join_6@2x.png'),
           title: 'DeFi Pulse',
           text: 'My Spring Festival To tell you the truth, I don like the Spring Festival at all.'
         }

@@ -8,7 +8,7 @@
         </div>
         <div class="display-flex box-center-Y tab-box">
           <div class="tab-list box-flex1 display-flex box-center-Y">
-            <div class="box-flex1 tab-item no-select" :class="{active: tab === i}" v-for="(v, i) in tabs" :key="`tab${i}`" @click="selectTab(i)">{{v}}</div>
+            <nuxt-link :to="`/${v.path}`" tag="div" class="box-flex1 tab-item no-select" v-for="(v, i) in tabs" :key="`tab${i}`" @click="selectTab(i)">{{v.name}}</nuxt-link>
           </div>
           <div class="btn-disconnect no-select">DisConnect</div>
         </div>
@@ -164,7 +164,7 @@ export { default } from './js/default'
           height: 108px;
           width: 132px;
           line-height: 108px;
-          &.active {
+          &.nuxt-link-exact-active.nuxt-link-active {
             background-color: $emColor;
           }
         }

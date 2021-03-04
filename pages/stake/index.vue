@@ -61,6 +61,22 @@
           <div class="box2">
             <div class="desc">Option contract value dynamics depending
                               on the price of an underlying:</div>
+            <div class="process-box display-flex box-center-X">
+              <v-progress-circular
+                :width="20"
+                :size="238"
+                :rotate="360"
+                :value="liquidityValue"
+                color="indigo darken-2"
+              >
+                <div class="net-text">Net P&L</div>
+                <div class="number-box display-flex box-center-end">
+                  <div>{{ liquidityValue }}</div>
+                  <div class="currency-a">WBTC</div>
+                </div>
+              </v-progress-circular>
+            </div>
+            <div class="stake-btn no-select" @click="stakeBtn">WAITING FOR CONNECTION</div>
           </div>
         </div>
       </div>
@@ -154,14 +170,14 @@
           <div class="liquidity-text-box">
             <div class="liquidity-text-item">
               <div class="display-flex box-center-Y">
-                <div class="icon-img"><img src="../../assets/image/logo@2x.png" alt=""></div>
+                <div class="icon-img"><img src="../../assets/image/icon_problem@2x.png" alt=""></div>
                 <div>Problem</div>
               </div>
               <div class="text-desc">Writers(Liquidity providers)receive writeWBTC tokens(ERC20)that give them a share in the poots premiums that are distributed to them after the options contracts</div>
             </div>
             <div class="liquidity-text-item">
               <div class="display-flex box-center-Y">
-                <div class="icon-img"><img src="../../assets/image/logo@2x.png" alt=""></div>
+                <div class="icon-img"><img src="../../assets/image/icon_remind@2x.png" alt=""></div>
                 <div>Remind</div>
               </div>
               <div class="text-desc">Click the"Deposit button and 1 WBTC will be sent from your Ethereum address to the liquidity pool contract After the transaction is confirmed by miners, you will</div>
@@ -170,7 +186,7 @@
           <div class="box-flex1">
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/icon_trade_1@2x.png" alt=""></div>
                 <div class="box-flex1">Amount for Providing to the pool:</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
@@ -180,7 +196,7 @@
             </div>
             <div class="input-item">
               <div class="display-flex box-center-Y input-item-title">
-                <div class="input-item-title-icon"><img src="../../assets/image/logo@2x.png" alt=""></div>
+                <div class="input-item-title-icon"><img src="../../assets/image/icon_trade_2@2x.png" alt=""></div>
                 <div class="box-flex1">You Will Receive</div>
               </div>
               <div class="display-flex box-center-Y currency-input">

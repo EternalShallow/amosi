@@ -44,6 +44,7 @@ export default {
         list: ['WBTC', 'ETH'],
         index: 0
       },
+      liquidityValue: 45,
       option: {
         grid: {
           x: 10,
@@ -117,6 +118,7 @@ export default {
     },
     changeLiquidity (i) {
       this.liquidity.index = i
-    }
+    },
+    stakeBtn () {}
   }
 }

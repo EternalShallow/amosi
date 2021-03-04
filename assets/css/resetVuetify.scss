@@ -37,6 +37,17 @@
   padding:0 24px;
   margin-bottom: 10px;
 }
+.v-progress-circular__underlay{
+  color: #e6e6e6;
+}
+.v-progress-circular__overlay{
+  color: $emColor;
+}
+.v-progress-circular__info{
+  flex-direction: column;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+}
 .v-icon.notranslate.mdi.mdi-menu-down.theme--light{
   font-size: 44px;
 }
