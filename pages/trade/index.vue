@@ -19,6 +19,7 @@
             <p>If the price of underlying will rise higher than 1,601.25 during the next 1 day your option will expire worthless.</p>
             <p>If the price of underlying will fall down lower than 1,601.25 during the next 1 day you will be able to exercise your option and take profits.</p>
             <div class="price-desc">Option contract value dynamics depending on the price of an underlying:</div>
+            <div class="price-chart" id="priceChart"></div>
           </div>
           <div class="box-flex1">
             <div class="input-item">

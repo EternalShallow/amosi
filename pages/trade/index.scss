@@ -43,6 +43,11 @@
             font-size: 15px;
             line-height: 20px;
           }
+          .price-chart{
+            margin-top: 25px;
+            width: 375px;
+            height: 300px;
+          }
         }
         >.box-flex1{
           margin-left: 27px;
@@ -123,7 +128,7 @@
           }
           .trade-btn{
             cursor: pointer;
-            margin-top: 44px;
+            margin-top: 88px;
             width: 100%;
             height: 48px;
             background-color: $emColor;

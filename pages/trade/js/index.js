@@ -3,7 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods } from '../../../utils/web3/contractEvent'
 import { approveEvent } from '../../../utils/web3/contractApprove'
-
+import * as echarts from 'echarts'
 let that
 export default {
   data () {
@@ -161,7 +161,93 @@ export default {
           share: 90
         }
       ],
-      price_HT: 14
+      price_HT: 14,
+      option: {
+        grid: {
+          x: 10,
+          y: 30,
+          x2: 10,
+          y2: 10
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          axisLabel: {
+            show: false
+          },
+          axisTick: { // y轴刻度线
+            show: false
+          },
+          data: ['', '', '', '', '', '', '']
+        },
+        yAxis: {
+          axisLabel: {
+            show: false
+          },
+          type: 'value'
+        },
+        legend: {
+          data: ['Worthless Expiration', 'Unlimited Upside']
+        },
+        tooltip: {
+          trigger: 'axis', // 坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
+          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+            type: 'line' // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        series: [
+          {
+            name: 'Unlimited Upside',
+            itemStyle: {
+              normal: {
+                color: '#9CB918',
+                lineStyle: {
+                  color: '#9CB918'
+                }
+              }
+            },
+            data: [789, 932, 91, 934, 560, 670, 20],
+            type: 'line',
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.5, [{
+                  offset: 0,
+                  color: 'rgba(152, 180, 26, 0.5)'
+                }, {
+                  offset: 1,
+                  color: 'rgba(152, 180, 26, 0.05) '
+                }])
+              }
+            },
+            smooth: true
+          },
+          {
+            name: 'Worthless Expiration',
+            itemStyle: {
+              normal: {
+                color: '#C51313',
+                lineStyle: {
+                  color: '#C51313'
+                }
+              }
+            },
+            data: [820, 932, 901, 934, 1290, 330, 130],
+            type: 'line',
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.5, [{
+                  offset: 0,
+                  color: 'rgba(197, 19, 19, 0.5) '
+                }, {
+                  offset: 1,
+                  color: 'rgba(197, 19, 19, 0.05) '
+                }])
+              }
+            },
+            smooth: true
+          }
+        ]
+      }
     }
   },
   watch: {
@@ -176,8 +262,14 @@ export default {
   },
   mounted () {
     this.initPage()
+    this.initChart()
   },
   methods: {
+    initChart () {
+      var chartDom = document.getElementById('priceChart')
+      var myChart = echarts.init(chartDom)
+      this.option && myChart.setOption(this.option)
+    },
     changeTradeTab (i) {
       this.tradeTab.index = i
       this.getFees()
