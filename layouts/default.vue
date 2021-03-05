@@ -10,7 +10,7 @@
           <div class="tab-list box-flex1 display-flex box-center-Y">
             <nuxt-link :to="`/${v.path}`" tag="div" class="box-flex1 tab-item no-select" v-for="(v, i) in tabs" :key="`tab${i}`" @click="selectTab(i)">{{v.name}}</nuxt-link>
           </div>
-          <div class="btn-disconnect no-select">DisConnect</div>
+          <div class="btn-disconnect no-select" @click="disConnectAccount">DisConnect</div>
         </div>
       </div>
       <div class="box-flex1 content no-scroller" style="overflow-y: scroll;">
@@ -18,7 +18,7 @@
           <div class="center-width desc">THE SimpLESTem OPTIONS TRADING</div>
           <div class="center-width sub-desc">Trade non-custodial options for profits or to hedge your positions Enjoy fixed price and Nnlimited upside of the options contracts.No registration, KYC or email required.</div>
           <div class="line-withe"></div>
-          <div class="connect-wallet no-select">CONNECT  WALLET</div>
+          <div class="connect-wallet no-select" @click="connectAccount" v-show="!account">CONNECT  WALLET</div>
         </div>
         <nuxt />
         <div class="document-out-box">

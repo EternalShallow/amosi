@@ -12,7 +12,7 @@
       </div>
       <div class="box-flex1 con-box">
         <div class="display-flex box-center-Y trade-tab">
-          <div class="trade-tab-item no-select" @click="changeTradeTab(i)" :key="`trade-tab${i}`" v-for="(v, i) in tradeTab.list" :class="{active: i === tradeTab.index}">{{v}}</div>
+          <div class="trade-tab-item no-select" @click="changeTradeTab(i)" :key="`trade-tab${i}`" v-for="(v, i) in tradeTab.list" :class="{active: i === tradeTab.index}">{{v.name}}</div>
         </div>
         <div class="display-flex box-center-start right-con">
           <div class="text-box">
@@ -46,7 +46,7 @@
               </div>
               <div class="display-flex box-center-Y currency-input">
                 <y-number-input :point="18" v-model="tradeForm.optionSize" @input="changeVal"></y-number-input>
-                <div class="currency">{{tradeTab.list[tradeTab.index]}}</div>
+                <div class="currency">{{tradeTab.list[tradeTab.index].name}}</div>
               </div>
             </div>
             <div class="input-item">
@@ -85,7 +85,8 @@
                 <div class="number">${{milliFormat(fees.breakEven)}}</div>
               </div>
             </div>
-            <div class="trade-btn no-select" @click="buyOptions">WAITING FOR CONNECTION</div>
+            <div v-if="account" class="trade-btn no-select" @click="buyOptions">BUY OPTION CONTRACT</div>
+            <div v-else class="trade-btn no-select" @click="connectAccount">WAITING FOR CONNECTION</div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { isAddress, useTokenContract } from '../../../utils/web3/web3Utils'
+import { isAddress, useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import { BigNumber } from '@ethersproject/bignumber'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods } from '../../../utils/web3/contractEvent'
@@ -11,7 +11,16 @@ export default {
       tokenContract: null,
       account: '',
       tradeTab: {
-        list: ['HETH', 'HBTC', 'HT'],
+        list: [{
+          name: 'HETH',
+          contract: process.env.coin_address_HETH
+        }, {
+          name: 'HBTC',
+          contract: process.env.coin_address_HBTC
+        }, {
+          name: 'WHT',
+          contract: process.env.coin_address_WHT
+        }],
         index: 0
       },
       items: ['1day', '1week(7days)', '2week(14days)', '3week(21days)', '4week(28days)'],
@@ -285,13 +294,16 @@ export default {
       if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
         return
       }
-      const tokenContract = useTokenContract(process.env.future_HT, COIN_ABI.futures_HT)
+      console.log(this.tradeTab.list[this.tradeTab.index].contract)
+      const contract = this.tradeTab.list[this.tradeTab.index].contract
+      // const tokenContract = useTokenContract(contract, COIN_ABI.futures_HT)
+      const tokenContract = useTokenContractWeb3(COIN_ABI.futures_HT, contract)
       try {
-        const fees = await tokenContract.fees(
+        const fees = await tokenContract.methods.fees(
           this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
           this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
           this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-          this.optionsType)
+          this.optionsType).call()
         this.fees = {
           total: fees.total.toString(),
           settlementFee: fees.settlementFee.toString(),
@@ -315,27 +327,33 @@ export default {
       if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
         return
       }
-      const tokenContract = useTokenContract(process.env.future_HT, COIN_ABI.futures_HT)
+      const contract = this.tradeTab.list[this.tradeTab.index].contract
+      const tokenContract = useTokenContract(contract, COIN_ABI.futures_HT)
+      const tokenContractEvent = useTokenContractWeb3(COIN_ABI.futures_HT, contract)
+      await tokenContractEvent.getPastEvents('Create', {
+        filter: { _from: '0xc4cd3bd2b2b5b1e66a440eaa3857ec2f12f42f44' },
+        fromBlock: 0,
+        toBlock: 'latest'
+        // eslint-disable-next-line handle-callback-err
+      }, (error, events) => {
+        console.log(events)
+      })
       console.log(
         this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
         this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
         this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
         this.optionsType
       )
-      try {
-        await useContractMethods({
-          contract: tokenContract,
-          methodName: 'create',
-          parameters: [
-            this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
-            '1',
-            this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-            this.optionsType
-          ]
-        })
-      } catch (e) {
-        console.log(e)
-      }
+      await useContractMethods({
+        contract: tokenContract,
+        methodName: 'create',
+        parameters: [
+          this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
+          '1',
+          this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
+          this.optionsType
+        ]
+      })
     },
     async connectWallet () {
       const init_wab3 = await this.initWeb3()

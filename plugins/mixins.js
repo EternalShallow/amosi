@@ -20,6 +20,7 @@ export default {
     return {
       resolve: '',
       reject: '',
+      account: '',
       promise: '' // 保存promise对象
     }
   },
@@ -32,6 +33,14 @@ export default {
     })
   },
   methods: {
+    async disConnectAccount () {
+      console.log(this.$web3_http.currentProvider)
+      // await this.$web3_http.currentProvider.disconnect()
+      Vue.prototype.$account = ''
+      Vue.prototype.$accounts = []
+      this.account = ''
+      this.$store.dispatch('updateAccounts', [])
+    },
     async initWeb3 () {
       const that = this
       that.promise = new Promise((resolve, reject) => {
@@ -43,6 +52,7 @@ export default {
         Vue.prototype.$web3_http = web3_http
         Vue.prototype.$web3 = web3
         Vue.prototype.$library = library
+        console.log(library)
         let accounts
         if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
           // 请求账号授权
@@ -54,6 +64,7 @@ export default {
         console.log(accounts)
         Vue.prototype.$account = accounts[0]
         Vue.prototype.$accounts = accounts
+        that.account = accounts[0]
         await that.$store.dispatch('updateAccounts', accounts)
         that.initTransactions()
         if (!accounts) {
@@ -77,6 +88,30 @@ export default {
         return that.promise
       }
     },
+    async connectAccount () {
+      const { web3 } = await getWeb3()
+      if (!web3) {
+        return this.initWeb3()
+      }
+      const that = this
+      try {
+        let accounts
+        if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
+          // 请求账号授权
+          await window.ethereum.enable()
+          accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        } else {
+          accounts = await web3.eth.getAccounts()
+        }
+        console.log(accounts)
+        Vue.prototype.$account = accounts[0]
+        Vue.prototype.$accounts = accounts
+        that.account = accounts[0]
+        await that.$store.dispatch('updateAccounts', accounts)
+      } catch (err) {
+        console.log(err)
+      }
+    },
     milliFormat (num) {
       return milliFormat(num)
     },
@@ -90,6 +125,7 @@ export default {
       })
     },
     setAccount (val) {
+      this.account = val[0]
     },
     closeLoading () {
       this.$store.dispatch('updateLoading', false)
