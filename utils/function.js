@@ -193,6 +193,11 @@ export function timeToDate(time) {
     + ' ' + numZero(d.getHours()) + ':' + numZero(d.getMinutes()) + ':' + numZero(d.getSeconds())
 }
 
+export function timeToDate1(time) {
+  let d = new Date(time * 1000)
+  return d.getFullYear() + '.' + numZero(d.getMonth() + 1) + '.' + numZero(d.getDate())
+}
+
 
 /**
  * 保留两位整数补零

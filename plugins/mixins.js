@@ -52,7 +52,23 @@ export default {
         Vue.prototype.$web3_http = web3_http
         Vue.prototype.$web3 = web3
         Vue.prototype.$library = library
-        console.log(library)
+        const transaction = await web3_http.eth.getTransaction('0x683016ae30865e6518e0170e94cf967f1607d6f3fdc08d90dee43f7bde1e02e4')
+        console.log(transaction)
+        const inputs = web3_http.utils.toAscii(transaction.input)
+        web3_http.eth.abi.decodeLog([{ indexed: true, internalType: 'uint256', name: 'id', type: 'uint256' }, {
+          indexed: true,
+          internalType: 'address',
+          name: 'account',
+          type: 'address'
+        }, { indexed: false, internalType: 'uint256', name: 'settlementFee', type: 'uint256' }, {
+          indexed: false,
+          internalType: 'uint256',
+          name: 'totalFee',
+          type: 'uint256'
+        }],
+        '0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000748656c6c6f252100000000000000000000000000000000000000000000000000',
+        ['0x000000000000000000000000000000000000000000000000000000000000f310', '0x0000000000000000000000000000000000000000000000000000000000000010'])
+        console.log(inputs)
         let accounts
         if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
           // 请求账号授权

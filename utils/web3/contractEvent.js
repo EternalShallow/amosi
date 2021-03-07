@@ -1,7 +1,7 @@
 import { TRANSACTION_ACTIONS } from './constants'
 // import { getGasLimit } from './web3Utils'
 
-export function useCallback (response, { summary, approval }) {
+export function useCallback (response, { summary, eventName, approval }) {
   if (process.client) {
     const { $store } = window.$nuxt
     const { hash } = response
@@ -9,6 +9,7 @@ export function useCallback (response, { summary, approval }) {
       hash,
       type: TRANSACTION_ACTIONS.ADDED,
       summary,
+      eventName,
       approval
     })
     response.wait().then(res => {
@@ -58,7 +59,7 @@ export function sendTransactionEvent (sendEvent, { summary, approval }) {
   }
 }
 
-export async function useContractMethods ({ contract, methodName, parameters, summary }) {
+export async function useContractMethods ({ contract, methodName, parameters, eventName, summary }) {
   if (!contract) {
     console.error('no contract')
     return
@@ -84,7 +85,8 @@ export async function useContractMethods ({ contract, methodName, parameters, su
   }
   method.then((response) => {
     useCallback(response, {
-      summary: summary
+      summary: summary,
+      eventName: eventName
     })
   })
     .catch((error) => {

@@ -4,6 +4,8 @@ import COIN_ABI from '../../../utils/web3/coinABI'
 import { useContractMethods } from '../../../utils/web3/contractEvent'
 import { approveEvent } from '../../../utils/web3/contractApprove'
 import * as echarts from 'echarts'
+import { timeToDate1 } from '../../../utils/function'
+
 let that
 export default {
   data () {
@@ -12,14 +14,11 @@ export default {
       account: '',
       tradeTab: {
         list: [{
-          name: 'HETH',
-          contract: process.env.coin_address_HETH
+          currency: 'HBTC',
+          contract: process.env.options_HBTC
         }, {
-          name: 'HBTC',
-          contract: process.env.coin_address_HBTC
-        }, {
-          name: 'WHT',
-          contract: process.env.coin_address_WHT
+          currency: 'HT',
+          contract: process.env.options_HT
         }],
         index: 0
       },
@@ -294,16 +293,18 @@ export default {
       if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
         return
       }
-      console.log(this.tradeTab.list[this.tradeTab.index].contract)
-      const contract = this.tradeTab.list[this.tradeTab.index].contract
-      // const tokenContract = useTokenContract(contract, COIN_ABI.futures_HT)
-      const tokenContract = useTokenContractWeb3(COIN_ABI.futures_HT, contract)
+      const current_currency = this.tradeTab.list[this.tradeTab.index]
+      console.log(current_currency.contract)
+      const contract = current_currency.contract
+      const tokenContract = useTokenContract(contract, COIN_ABI[`futures_${current_currency.currency}`])
+      // const tokenContract = useTokenContractWeb3(COIN_ABI[`futures_${current_currency.currency}`], contract)
       try {
-        const fees = await tokenContract.methods.fees(
+        const fees = await this.getFeesResult(
+          tokenContract,
           this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
-          this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
-          this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-          this.optionsType).call()
+          this.tradeForm.optionSize,
+          this.tradeForm.strikePrice,
+          this.optionsType)
         this.fees = {
           total: fees.total.toString(),
           settlementFee: fees.settlementFee.toString(),
@@ -323,27 +324,24 @@ export default {
         console.log(e)
       }
     },
+    async getFeesResult (tokenContract, hold, optionSize, strikePrice, optionsType) {
+      try {
+        return await tokenContract.fees(
+          hold,
+          this.$web3_http.utils.toWei(optionSize, 'ether'),
+          this.$web3_http.utils.toWei(strikePrice, 'ether'),
+          optionsType)
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
     async buyOptions () {
       if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
         return
       }
       const contract = this.tradeTab.list[this.tradeTab.index].contract
       const tokenContract = useTokenContract(contract, COIN_ABI.futures_HT)
-      const tokenContractEvent = useTokenContractWeb3(COIN_ABI.futures_HT, contract)
-      await tokenContractEvent.getPastEvents('Create', {
-        filter: { _from: '0xc4cd3bd2b2b5b1e66a440eaa3857ec2f12f42f44' },
-        fromBlock: 0,
-        toBlock: 'latest'
-        // eslint-disable-next-line handle-callback-err
-      }, (error, events) => {
-        console.log(events)
-      })
-      console.log(
-        this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
-        this.$web3_http.utils.toWei(this.tradeForm.optionSize, 'ether'),
-        this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-        this.optionsType
-      )
       await useContractMethods({
         contract: tokenContract,
         methodName: 'create',
@@ -363,148 +361,96 @@ export default {
         text: init_wab3.message
       })
     },
-    async submit (v) {
-      if (!that.$account) {
-        return that.$toastBox.showToastBox({
-          type: 'none',
-          text: '请先连接ETH账号'
-        })
-      }
-      const parameters = []
-      if (v.inputs.length > 0) {
-        for (let i = 0; i < v.inputs.length; i++) {
-          if (!v.inputs[i].value) {
-            return that.$toastBox.showToastBox({
-              type: 'none',
-              text: `please input ${v.inputs[i].name} (${v.inputs[i].type})`
-            })
-          }
-          if (v.inputs[i].type === 'address' && !isAddress(v.inputs[i].value)) {
-            return that.$toastBox.showToastBox({
-              type: 'none',
-              text: '地址不合法'
-            })
-          }
-          parameters.push(v.inputs[i].value)
-        }
-      }
-      if (v.name === 'approve') {
-        await approveEvent(process.env.pool_coin_UNIV2_YF_USDT, {
-          approve_amount: parameters[1],
-          symbol: 'YF',
-          address: parameters[0],
-          wei: 'ether'
-        })
-      } else {
-        await useContractMethods({
-          contract: that.tokenContract,
-          methodName: v.name,
-          parameters: parameters,
-          summary: 'Stake UNIV2'
-        })
-      }
-      console.log(v)
-    },
-    async submitQuery (v, i) {
-      const methodName = v.name
-      if (!that.$account) {
-        return that.$toastBox.showToastBox({
-          type: 'none',
-          text: '请先连接ETH账号'
-        })
-      }
-      const parameters = []
-      if (v.inputs.length > 0) {
-        for (let i = 0; i < v.inputs.length; i++) {
-          if (!v.inputs[i].value) {
-            return that.$toastBox.showToastBox({
-              type: 'none',
-              text: `please input ${v.inputs[i].name} (${v.inputs[i].type})`
-            })
-          }
-          if (v.inputs[i].type === 'address' && !isAddress(v.inputs[i].value)) {
-            return that.$toastBox.showToastBox({
-              type: 'none',
-              text: '地址不合法'
-            })
-          }
-          parameters.push(v.inputs[i].value)
-        }
-      }
-      let method
-      if (parameters.length < 1) {
-        method = that.tokenContract[methodName]()
-      } else if (parameters.length === 1) {
-        method = that.tokenContract[methodName](parameters[0])
-      } else if (parameters.length === 2) {
-        method = that.tokenContract[methodName](parameters[0], parameters[1])
-      } else if (parameters.length === 3) {
-        method = that.tokenContract[methodName](parameters[0], parameters[1], parameters[2])
-      } else if (parameters.length === 4) {
-        method = that.tokenContract[methodName](parameters[0], parameters[1], parameters[2], parameters[3])
-      }
-      const value = await method
-      console.log(value)
-      v.value = value
-      if (BigNumber.isBigNumber(value)) {
-        v.value = value.toString()
-      }
-      console.log(v)
-      this.read_contract.splice(i, 1, v)
-    },
-    errors () {
-    },
     setAccount () {
       this.initPage()
     },
     initPage () {
       that = this
       if (that.$account) {
-        console.log(that.$web3_http)
         that.account = that.$account
-        that.initContract()
+        that.getContractDataList()
       }
     },
-    async initABI () {
-      this.write_contract = COIN_ABI.heco_abi.filter(item => (item.type === 'event' || item.type === 'function') && !item.constant && item.type !== 'constructor')
-      this.read_contract = COIN_ABI.heco_abi.filter(item => !((item.type === 'event' || item.type === 'function') && !item.constant) && item.type !== 'constructor')
-      console.log(this.write_contract)
-      console.log(this.read_contract)
-      for (let i = 0; i < this.write_contract.length; i++) {
-        const event = this.write_contract[i]
-        const inputs = event.inputs
-        for (let j = 0; j < inputs.length; j++) {
-          event.inputs[j].value = ''
-        }
-        this.write_contract.splice(i, 1, event)
-      }
-      for (let i = 0; i < this.read_contract.length; i++) {
-        const event = this.read_contract[i]
-        const inputs = event.inputs
-        if (inputs.length > 0) {
-          event.value = ''
-          for (let j = 0; j < inputs.length; j++) {
-            event.inputs[j].value = ''
-          }
-        } else {
-          const value = await that.tokenContract[event.name]()
-          if (BigNumber.isBigNumber(value)) {
-            event.value = value.toString()
+    // 解析 getTransaction input 输入的参数
+    async decodeParamsOfCreate (txHash, func_abi) {
+      func_abi = func_abi || [{ internalType: 'uint256', name: 'period', type: 'uint256' }, {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      }, { internalType: 'uint256', name: 'strike', type: 'uint256' }, {
+        internalType: 'enum ISeaweedOptions.OptionType',
+        name: 'optionType',
+        type: 'uint8'
+      }]
+      const txData = await this.$web3_http.eth.getTransaction(txHash)
+      const input = '0x' + txData.input.substr(10)
+      return this.$web3_http.eth.abi.decodeParameters(func_abi, input)
+    },
+    async getContractDataList () {
+      const contract = this.tradeTab.list[1].contract
+      const tokenContract = useTokenContract(contract, COIN_ABI.futures_HT)
+      const event = tokenContract.interface.events
+      console.log(event)
+      // const transaction = await this.$web3_http.eth.getTransaction('0x683016ae30865e6518e0170e94cf967f1607d6f3fdc08d90dee43f7bde1e02e4')
+      // console.log(transaction)
+      // const inputs = this.$web3_shttp.utils.toAscii(transaction.input)
+      // console.log(inputs)
+      const lastBlock = await this.$web3_http.eth.getBlock('latest')
+      const logs = await this.$library.getLogs({
+        fromBlock: lastBlock.number - 5000,
+        toBlock: lastBlock.number,
+        address: contract
+      })
+      console.log(logs)
+      that.contractDataList = []
+      for (let i = 0; i < logs.length; i++) {
+        try {
+          const createParams = await this.decodeParamsOfCreate(logs[i].transactionHash)
+          const options = await tokenContract.options(parseInt(logs[i].topics[1]))
+          const strikePrice = this.$web3_http.utils.fromWei(options.strike.toString())
+          const input = await this.$web3_http.eth.abi.decodeLog([
+            { indexed: true, internalType: 'uint256', name: 'id', type: 'uint256' },
+            {
+              indexed: true,
+              internalType: 'address',
+              name: 'account',
+              type: 'address'
+            },
+            { indexed: false, internalType: 'uint256', name: 'settlementFee', type: 'uint256' },
+            {
+              indexed: false,
+              internalType: 'uint256',
+              name: 'totalFee',
+              type: 'uint256'
+            }],
+          logs[i].data,
+          logs[i].topics)
+          console.log(input)
+          const fees = await this.getFeesResult(tokenContract, createParams.period, options.amount.toString(), strikePrice, options.optionType)
+          const totalFee = parseFloat(this.$web3_http.utils.fromWei(fees.total.toString(), 'ether'))
+          const totalCost = parseFloat(this.keepPoint(this.price_HT * totalFee, 2))
+          let breakEven = 0
+          if (options.optionType === 1) {
+            breakEven = parseFloat(this.keepPoint(strikePrice + (totalCost / options.amount.toString()), 2))
           } else {
-            event.value = value
-            console.log(event.name, await that.tokenContract[event.name]())
+            breakEven = parseFloat(this.keepPoint(strikePrice - (totalCost / options.amount.toString()), 2))
           }
+          that.contractDataList.push({
+            type: options.optionType === 2 ? 'CALL' : 'PUT',
+            size: options.amount.toString(),
+            strikePrice,
+            nowPrice: 235.1,
+            breakEven: breakEven,
+            PL: 12,
+            placedAt: `${logs[i].address.substr(0, 3)}...${logs[i].address.substr(logs[i].address.length - 4, logs[i].address.length)}`,
+            expireIn: timeToDate1(options.expiration),
+            expiration: options.expiration,
+            exercise: 1,
+            share: 90
+          })
+        } catch (e) {
+          console.log(e)
         }
-        this.read_contract.splice(i, 1, event)
-      }
-    },
-    async initContract () {
-      try {
-        that.tokenContract = useTokenContract('0xfc84727e575bb68fa5205f542e43130f33be868d', COIN_ABI.heco_abi)
-        console.log(await that.tokenContract.balanceOf(that.account))
-        await this.initABI()
-      } catch (e) {
-        console.log(e)
       }
     }
   }

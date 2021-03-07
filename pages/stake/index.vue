@@ -25,7 +25,7 @@
                 </div>
               </div>
               <div class="deposit-item">
-                <div>Liquidity Provided</div>
+                <div>Net P&L</div>
                 <div class="number-box display-flex box-center-Y">
                   <div>0</div>
                   <div class="currency-a">WBTC</div>

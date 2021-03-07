@@ -62,7 +62,7 @@ export default {
    * @param store
    * @returns {Promise<void>}
    */
-  async updateTransactions (context, { hash, summary, approval, type, store }) {
+  async updateTransactions (context, { hash, summary, eventName, approval, type, store }) {
     let web3_http = null
     if (process.client) {
       web3_http = window.$nuxt.$web3_http
@@ -88,6 +88,7 @@ export default {
             ...payload,
             ...{
               summary,
+              eventName,
               approval,
               addedTime: nowTime()
             }
