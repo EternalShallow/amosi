@@ -281,6 +281,7 @@ export default {
     changeTradeTab (i) {
       this.tradeTab.index = i
       this.getFees()
+      this.getContractDataList()
     },
     changeContractTab (i) {
       this.contractTab.index = i
@@ -351,6 +352,8 @@ export default {
           this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
           this.optionsType
         ]
+      }, function () {
+        that.getContractDataList()
       })
     },
     async connectWallet () {
@@ -387,14 +390,11 @@ export default {
       return this.$web3_http.eth.abi.decodeParameters(func_abi, input)
     },
     async getContractDataList () {
-      const contract = this.tradeTab.list[1].contract
-      const tokenContract = useTokenContract(contract, COIN_ABI.futures_HT)
+      const current_currency = this.tradeTab.list[this.tradeTab.index]
+      const contract = current_currency.contract
+      const tokenContract = useTokenContract(contract, COIN_ABI[`futures_${current_currency.currency}`])
       const event = tokenContract.interface.events
       console.log(event)
-      // const transaction = await this.$web3_http.eth.getTransaction('0x683016ae30865e6518e0170e94cf967f1607d6f3fdc08d90dee43f7bde1e02e4')
-      // console.log(transaction)
-      // const inputs = this.$web3_shttp.utils.toAscii(transaction.input)
-      // console.log(inputs)
       const lastBlock = await this.$web3_http.eth.getBlock('latest')
       const logs = await this.$library.getLogs({
         fromBlock: lastBlock.number - 5000,
@@ -406,7 +406,8 @@ export default {
       for (let i = 0; i < logs.length; i++) {
         try {
           const createParams = await this.decodeParamsOfCreate(logs[i].transactionHash)
-          const options = await tokenContract.options(parseInt(logs[i].topics[1]))
+          const optionId = parseInt(logs[i].topics[1])
+          const options = await tokenContract.options(optionId)
           const strikePrice = this.$web3_http.utils.fromWei(options.strike.toString())
           const input = await this.$web3_http.eth.abi.decodeLog([
             { indexed: true, internalType: 'uint256', name: 'id', type: 'uint256' },
@@ -437,7 +438,7 @@ export default {
           }
           that.contractDataList.push({
             type: options.optionType === 2 ? 'CALL' : 'PUT',
-            size: options.amount.toString(),
+            size: `${options.amount.toString()} ${current_currency.currency}`,
             strikePrice,
             nowPrice: 235.1,
             breakEven: breakEven,
@@ -446,12 +447,29 @@ export default {
             expireIn: timeToDate1(options.expiration),
             expiration: options.expiration,
             exercise: 1,
-            share: 90
+            share: 90,
+            optionId
           })
         } catch (e) {
           console.log(e)
         }
       }
+    },
+    async exercise (v) {
+      const that = this
+      const current_currency = this.tradeTab.list[this.tradeTab.index]
+      const contract = current_currency.contract
+      const tokenContract = useTokenContract(contract, COIN_ABI[`futures_${current_currency.currency}`])
+      await useContractMethods({
+        contract: tokenContract,
+        methodName: 'exercise',
+        parameters: [
+          v.optionId
+        ],
+        callback: function () {
+          that.getContractDataList()
+        }
+      })
     }
   }
 }

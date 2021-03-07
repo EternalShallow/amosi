@@ -119,7 +119,10 @@
               <div class="box-flex1">{{v.PL}}</div>
               <div class="box-flex1">{{v.placedAt}}</div>
               <div class="box-flex1">{{v.expireIn}}</div>
-              <div class="box-flex1">{{v.exercise}}</div>
+<!--              <div class="box-flex1">{{v.exercise}}</div>-->
+              <div class="box-flex1">
+                <div class="exercise no-select" @click="exercise(v)">exercise</div>
+              </div>
               <div class="box-flex1">{{v.share}}</div>
             </div>
           </div>

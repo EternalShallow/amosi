@@ -208,6 +208,15 @@
             &.data-head{
               color: rgba(255, 255, 255, 0.6);
             }
+            .exercise{
+              width: 80px;
+              height: 26px;
+              margin: 0 auto;
+              border: 1px solid $bgColor;
+              color: $bgColor;
+              text-align: center;
+              cursor: pointer;
+            }
           }
         }
       }
