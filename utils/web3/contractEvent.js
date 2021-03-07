@@ -24,7 +24,7 @@ export function useCallback (response, { summary, eventName, approval }, callbac
   }
 }
 
-export function sendTransactionEvent (sendEvent, { summary, approval }) {
+export function sendTransactionEvent (sendEvent, { summary, approval }, callback) {
   if (process.client) {
     const { $store } = window.$nuxt
     sendEvent.on('transactionHash', function (hash) {
@@ -41,6 +41,7 @@ export function sendTransactionEvent (sendEvent, { summary, approval }) {
         hash: receipt.transactionHash,
         type: TRANSACTION_ACTIONS.CONFIRMED
       })
+      callback && callback()
     }).catch(error => {
       console.log(error)
       if (error?.code === 4001) {

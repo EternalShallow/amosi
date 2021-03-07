@@ -1,8 +1,7 @@
-import { isAddress, useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
-import { BigNumber } from '@ethersproject/bignumber'
+import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+// import { BigNumber } from '@ethersproject/bignumber'
 import COIN_ABI from '../../../utils/web3/coinABI'
-import { useContractMethods } from '../../../utils/web3/contractEvent'
-import { approveEvent } from '../../../utils/web3/contractApprove'
+import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
 import * as echarts from 'echarts'
 import { timeToDate1 } from '../../../utils/function'
 
@@ -47,128 +46,7 @@ export default {
         index: 0
       },
       contractHead: ['Type', 'Size', 'Strike Price', 'Price Now', 'Break-even', 'P&L', 'Placed At', 'Expires in', 'Exercise', 'Share'],
-      contractDataList: [
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        },
-        {
-          type: 'type',
-          size: 21321,
-          strikePrice: 123.12,
-          nowPrice: 235.1,
-          breakEven: 21,
-          PL: 12,
-          placedAt: 'akss',
-          expireIn: '2021.12.2',
-          exercise: 1,
-          share: 90
-        }
-      ],
+      contractDataList: [],
       price_HT: 14,
       option: {
         grid: {
@@ -342,19 +220,21 @@ export default {
         return
       }
       const contract = this.tradeTab.list[this.tradeTab.index].contract
-      const tokenContract = useTokenContract(contract, COIN_ABI.futures_HT)
-      await useContractMethods({
-        contract: tokenContract,
-        methodName: 'create',
-        parameters: [
+      const tokenContract = useTokenContractWeb3(COIN_ABI.futures_HT, contract)
+      sendTransactionEvent(
+        tokenContract.methods.create(
           this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
-          '1',
+          that.$web3_http.utils.toWei(that.tradeForm.optionSize),
           this.$web3_http.utils.toWei(this.tradeForm.strikePrice, 'ether'),
-          this.optionsType
-        ]
-      }, function () {
-        that.getContractDataList()
-      })
+          this.optionsType)
+          .send({
+            from: that.account,
+            value: that.$web3_http.utils.toWei(that.tradeForm.optionSize)
+          }), {
+          summary: `create ${that.amount}`
+        }, function () {
+          that.getContractDataList()
+        })
     },
     async connectWallet () {
       const init_wab3 = await this.initWeb3()
@@ -438,7 +318,7 @@ export default {
           }
           that.contractDataList.push({
             type: options.optionType === 2 ? 'CALL' : 'PUT',
-            size: `${options.amount.toString()} ${current_currency.currency}`,
+            size: `${that.$web3_http.utils.fromWei(options.amount.toString())} ${current_currency.currency}`,
             strikePrice,
             nowPrice: 235.1,
             breakEven: breakEven,

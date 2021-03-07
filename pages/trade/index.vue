@@ -45,7 +45,7 @@
                   </v-radio-group>
               </div>
               <div class="display-flex box-center-Y currency-input">
-                <y-number-input :point="18" v-model="tradeForm.optionSize" @input="changeVal"></y-number-input>
+                <y-number-input :point="6" v-model="tradeForm.optionSize" @input="changeVal"></y-number-input>
                 <div class="currency">{{tradeTab.list[tradeTab.index].currency}}</div>
               </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="box-flex1">Strike  Price</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
-                <y-number-input :point="18" v-model="tradeForm.strikePrice" @input="changeVal"></y-number-input>
+                <y-number-input :point="6" v-model="tradeForm.strikePrice" @input="changeVal"></y-number-input>
                 <div class="currency">USD</div>
               </div>
             </div>

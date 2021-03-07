@@ -1,10 +1,25 @@
 import * as echarts from 'echarts'
-// let that
+import { approveEvent } from '../../../utils/web3/contractApprove'
+import { isAddress, useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+import { MaxUint256 } from '@ethersproject/constants'
+import COIN_ABI from '../../../utils/web3/coinABI'
+import { keepPoint, numAdd, numDiv, numMulti, numSub } from '../../../utils/function'
+import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
+let that
 export default {
   data () {
     return {
       tokenContract: null,
       account: '',
+      amount: '',
+      receive: '',
+      allowance: 0,
+      currentLiquidity: null,
+      currencyContract: null,
+      poolContract: null,
+      isApprove: true,
+      totalBalance: 0,
+      totalSupply: 0,
       historicalList: [
         {
           icon_url: require('../../../assets/image/icon_historical_1@2x.png'),
@@ -41,7 +56,22 @@ export default {
         }
       ],
       liquidity: {
-        list: ['WBTC', 'ETH'],
+        list: [{
+          currency: 'HBTC',
+          contract: process.env.stake_HBTC,
+          contractCurrency: process.env.currency_HBTC,
+          contractPool: process.env.pool_HT
+        }, {
+          currency: 'HETH',
+          contractCurrency: process.env.currency_HETH,
+          contract: process.env.stake_HETH,
+          contractPool: process.env.pool_HT
+        }, {
+          currency: 'HT',
+          contract: process.env.stake_HT,
+          contractCurrency: process.env.currency_HT,
+          contractPool: process.env.pool_HT
+        }],
         index: 0
       },
       liquidityValue: 45,
@@ -106,19 +136,110 @@ export default {
   },
   mounted () {
     // that = this
+    this.initPage()
     this.initChart()
   },
   methods: {
+    async initPage () {
+      that = this
+      await that.getContractInit()
+      console.log(MaxUint256)
+      if (that.$account) {
+        that.account = that.$account
+      }
+    },
+    async getAllowance () {
+      const allowance = await that.poolContract.allowance(that.account, that.currentLiquidity.contractPool)
+      that.allowance = allowance.toString()
+      console.log(that.allowance, that.$web3.utils.toWei(that.amount.toString()))
+      that.isApprove = parseInt(allowance) >= parseInt(that.$web3.utils.toWei(that.amount.toString()))
+      console.log(that.isApprove)
+    },
+    async getContractInit () {
+      console.log(that.liquidity.list[that.liquidity.index])
+      try {
+        that.currentLiquidity = that.liquidity.list[that.liquidity.index]
+        that.currencyContract = useTokenContract(that.currentLiquidity.contractCurrency, COIN_ABI.currency_HT)
+        that.poolContract = useTokenContract(that.currentLiquidity.contractPool, COIN_ABI.pool_HT)
+        console.log(that.poolContract)
+        const totalBalance = await that.poolContract.totalBalance()
+        const totalSupply = await that.poolContract.totalSupply()
+        that.totalBalance = parseFloat(that.$web3_http.utils.fromWei(totalBalance.toString()))
+        that.totalSupply = parseFloat(that.$web3_http.utils.fromWei(totalSupply.toString()))
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    changeAmount (val) {
+      if (!val) {
+        that.receive = ''
+        return
+      }
+      that.amount = parseFloat(val)
+      if (that.amount < that.totalBalance) {
+        console.log(numMulti(that.totalSupply, that.amount - 0.0001), numSub(that.totalBalance, that.amount - 0.0001))
+        console.log(numDiv(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount)))
+        that.receive = parseFloat(keepPoint(numDiv(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount)), 8))
+      } else {
+        console.log(numMulti(that.totalSupply, that.amount - 0.0001), numSub(that.totalBalance, that.amount - 0.0001))
+        that.receive = parseFloat(keepPoint(numDiv(numMulti(that.totalSupply, that.amount - 0.0001), numSub(that.totalBalance, that.amount - 0.0001)), 8))
+      }
+      that.getAllowance()
+    },
+    changeReceive (val) {
+      if (!val) {
+        that.amount = ''
+        return
+      }
+      that.receive = parseFloat(val)
+      that.amount = parseFloat(keepPoint(numDiv(numMulti(that.totalBalance, that.receive), numAdd(that.receive, that.totalSupply)), 8))
+      that.getAllowance()
+    },
     initChart () {
       var chartDom = document.getElementById('stakeChart')
       var myChart = echarts.init(chartDom)
-      this.option && myChart.setOption(this.option)
+      that.option && myChart.setOption(that.option)
     },
     setAccount () {
+      this.initPage()
     },
-    changeLiquidity (i) {
-      this.liquidity.index = i
+    async changeLiquidity (i) {
+      that.liquidity.index = i
+      await that.getContractInit()
     },
-    stakeBtn () {}
+    approve () {
+      approveEvent(that.currentLiquidity.contractPool, {
+        approve_amount: that.amount,
+        symbol: that.currentLiquidity.currency,
+        address: that.currentLiquidity.contractCurrency,
+        wei: 'ether'
+      }, that.poolContract, function () {
+        that.getAllowance()
+      })
+    },
+    async deposit () {
+      const tokenContract = useTokenContractWeb3(COIN_ABI.pool_HT, that.currentLiquidity.contractPool)
+      sendTransactionEvent(tokenContract.methods.provide('0').send({
+        from: that.account,
+        value: that.$web3_http.utils.toWei(that.amount.toString())
+      }), {
+        summary: `provide ${that.amount} ${that.currentLiquidity.currency}`
+      }, function () {
+        that.amount = ''
+        that.changeAmount('')
+        console.log(`provide ${that.amount} ${that.currentLiquidity.currency} success...`)
+      })
+    },
+    async withdraw () {
+      await useContractMethods({
+        contract: that.poolContract,
+        methodName: 'withdraw',
+        parameters: [
+          that.$web3_http.utils.toWei(that.amount.toString())
+        ]
+      }, function () {
+        console.log('provide success...')
+      })
+    }
   }
 }

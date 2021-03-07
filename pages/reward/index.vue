@@ -188,7 +188,7 @@
                   <div class="box-flex1">You are buying this amount of HEGIC</div>
                 </div>
                 <div class="display-flex box-center-Y currency-input">
-                  <y-number-input :point="18" ></y-number-input>
+                  <y-number-input :point="6" ></y-number-input>
                   <div class="currency">HEIGC</div>
                 </div>
               </div>
@@ -198,7 +198,7 @@
                   <div class="box-flex1">You are sending this amount of ETH</div>
                 </div>
                 <div class="display-flex box-center-Y currency-input">
-                  <y-number-input :point="18" ></y-number-input>
+                  <y-number-input :point="6" ></y-number-input>
                   <div class="currency">ETH</div>
                 </div>
               </div>

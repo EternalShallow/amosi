@@ -58,7 +58,7 @@ export function groupArray(array, subGroupLength) {
  * @param isRound 是否四舍五入 默认不四舍五入
  * @returns {string}
  */
-export function keepPoint (num, point, isRound = false) {
+export function keepPoint (num, point = 2, isRound = false) {
   point = parseInt(point + '')
   if (isRound) {
     return parseFloat(num).toFixed(point || 2)

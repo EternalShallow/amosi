@@ -76,7 +76,8 @@
                 </div>
               </v-progress-circular>
             </div>
-            <div class="stake-btn no-select" @click="stakeBtn">WAITING FOR CONNECTION</div>
+            <div v-if="account" class="stake-btn no-select" @click="withdraw">WIRHDRAW</div>
+            <div v-else class="stake-btn no-select" @click="connectAccount">WAITING FOR CONNECTION</div>
           </div>
         </div>
       </div>
@@ -141,7 +142,7 @@
       </div>
       <div class="box-flex1 con-box">
         <div class="display-flex box-center-Y liquidity-tab">
-          <div class="liquidity-tab-item no-select" @click="changeLiquidity(i)" :key="`liquidity-tab${i}`" v-for="(v, i) in liquidity.list" :class="{active: i === liquidity.index}">{{v}}</div>
+          <div class="liquidity-tab-item no-select" @click="changeLiquidity(i)" :key="`liquidity-tab${i}`" v-for="(v, i) in liquidity.list" :class="{active: i === liquidity.index}">{{v.currency}}</div>
         </div>
         <div class="liquidity-info-box display-flex box-center-Y">
           <div class="box-flex1 liquidity-info-item">
@@ -190,8 +191,8 @@
                 <div class="box-flex1">Amount for Providing to the pool:</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
-                <y-number-input :point="18" ></y-number-input>
-                <div class="currency">WBTC</div>
+                <y-number-input :point="6" v-model="amount" @input="changeAmount" :max="totalBalance"></y-number-input>
+                <div class="currency">{{liquidity.list[liquidity.index].currency}}</div>
               </div>
             </div>
             <div class="input-item">
@@ -200,11 +201,13 @@
                 <div class="box-flex1">You Will Receive</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
-                <y-number-input :point="18" ></y-number-input>
-                <div class="currency write">writeWBTC</div>
+                <y-number-input :point="6" v-model="receive" @input="changeReceive" :max="totalSupply"></y-number-input>
+                <div class="currency write">write{{liquidity.list[liquidity.index].currency}}</div>
               </div>
             </div>
-            <div class="btn-liquidity-deposit no-select">DEPOSIT</div>
+            <div v-if="!account" class="btn-liquidity-deposit no-select" @click="connectAccount">WAITING FOR CONNECTION</div>
+            <div v-else-if="!isApprove" class="btn-liquidity-deposit no-select" @click="approve">Approve</div>
+            <div v-else class="btn-liquidity-deposit no-select" @click="deposit">DEPOSIT</div>
           </div>
         </div>
       </div>
