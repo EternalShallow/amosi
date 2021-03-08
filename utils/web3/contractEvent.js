@@ -43,7 +43,13 @@ export function sendTransactionEvent (sendEvent, { summary, approval }, callback
       })
       callback && callback()
     }).catch(error => {
-      console.log(error)
+      const errInfo = JSON.parse(JSON.stringify(error))
+      console.log(errInfo)
+      if (errInfo?.receipt && !errInfo.receipt?.status) {
+        alert('合约异常：Transaction has been reverted by the EVM')
+      } else {
+        alert(error.message)
+      }
       if (error?.code === 4001) {
         console.log('Transaction rejected.')
       } else {
