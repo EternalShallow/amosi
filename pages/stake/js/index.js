@@ -218,6 +218,9 @@ export default {
       })
     },
     async deposit () {
+      if (!that.amount || !that.receive) {
+        return alert('数据不能为空')
+      }
       const tokenContract = useTokenContractWeb3(COIN_ABI.pool_HT, that.currentLiquidity.contractPool)
       sendTransactionEvent(tokenContract.methods.provide('0').send({
         from: that.account,
