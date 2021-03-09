@@ -1,6 +1,6 @@
 import * as echarts from 'echarts'
 import { approveEvent } from '../../../utils/web3/contractApprove'
-import { isAddress, useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
+import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import { MaxUint256 } from '@ethersproject/constants'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { keepPoint, numAdd, numDiv, numMulti, numSub } from '../../../utils/function'
@@ -56,22 +56,30 @@ export default {
         }
       ],
       liquidity: {
-        list: [{
-          currency: 'HBTC',
-          contract: process.env.stake_HBTC,
-          contractCurrency: process.env.currency_HBTC,
-          contractPool: process.env.pool_HT
-        }, {
-          currency: 'HETH',
-          contractCurrency: process.env.currency_HETH,
-          contract: process.env.stake_HETH,
-          contractPool: process.env.pool_HT
-        }, {
-          currency: 'HT',
-          contract: process.env.stake_HT,
-          contractCurrency: process.env.currency_HT,
-          contractPool: process.env.pool_HT
-        }],
+        list: [
+          {
+            currency: 'HBTC',
+            contract: process.env.stake_HBTC,
+            contractCurrency: process.env.currency_HBTC,
+            contractPool: process.env.pool_HT,
+            icon_url: require('../../../assets/image/icon_pool_1@2x.png'),
+            desc: 'Provide WBTC to this pool to start selling WBTC call and put options and earning yield on WBTC'
+          }, {
+            currency: 'HETH',
+            contractCurrency: process.env.currency_HETH,
+            contract: process.env.stake_HETH,
+            contractPool: process.env.pool_HT,
+            icon_url: require('../../../assets/image/icon_pool_2@2x.png'),
+            desc: 'Provide ETH to this pool to start selling ETH call and put options and earning yield on ETH'
+          }, {
+            currency: 'HT',
+            contract: process.env.stake_HT,
+            contractCurrency: process.env.currency_HT,
+            contractPool: process.env.pool_HT,
+            icon_url: require('../../../assets/image/icon_pool_2@2x.png'),
+            desc: 'Provide ETH to this pool to start selling ETH call and put options and earning yield on ETH'
+          }
+        ],
         index: 0
       },
       liquidityValue: 45,

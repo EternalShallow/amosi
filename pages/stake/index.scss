@@ -25,9 +25,40 @@
         }
       }
 
+      .earn-tab {
+        .earn-tab-item{
+          background-color: $bgColor;
+          padding: 10px;
+          border-radius: 8px;
+          margin-left: 5px;
+          cursor: pointer;
+          &:first-child{
+            margin-left: 0;
+          }
+          &.active{
+            background-color: rgba(156, 185, 24, 0.1);
+          }
+          .item-img{
+            width: 80px;
+            height: 80px;
+            margin-right: 5px;
+          }
+          .name{
+            font-size: 18px;
+            font-weight: 600;
+            color: $block;
+          }
+          .desc{
+            margin-top: 5px;
+            font-size: 12px;
+            color: $color666;
+          }
+        }
+      }
+
       .box1 {
         width: 614px;
-
+        margin-top: 20px;
         .deposit-item {
           width: 302px;
           height: 185px;
@@ -65,8 +96,8 @@
             justify-content: flex-end;
 
             .btn-deposit {
-              width: 79px;
               height: 34px;
+              padding: 0 15px;
               background-color: $emColor;
               border-radius: 4px;
               line-height: 34px;
@@ -86,27 +117,31 @@
           background: $colorFFF;
           border-radius: 8px;
           padding: 26px 22px 0;
-          .rate-box{
-            .text{
+
+          .rate-box {
+            .text {
               font-size: 12px;
               font-weight: 400;
               line-height: 14px;
               color: $color666;
             }
-            .rate-text{
+
+            .rate-text {
               margin-top: 5px;
               font-size: 24px;
               font-weight: 500;
               line-height: 29px;
               color: $emColor;
             }
-            .rate-line-out{
+
+            .rate-line-out {
               margin-top: 6px;
               width: 100%;
               height: 16px;
               background-color: #e6e6e6;
               position: relative;
-              .rate-line{
+
+              .rate-line {
                 position: absolute;
                 left: 0;
                 top: 0;
@@ -115,19 +150,22 @@
                 background-color: $emColor;
               }
             }
-            .pl-box{
+
+            .pl-box {
               font-size: 24px;
               font-family: DIN BlackAlternate;
               font-weight: 500;
               line-height: 58px;
               color: $block;
-              .icon-img{
+
+              .icon-img {
                 width: 20px;
                 height: 20px;
                 margin-right: 10px;
               }
             }
-            .stake-chart{
+
+            .stake-chart {
               margin-top: 20px;
               width: 560px;
               height: 160px;
@@ -141,22 +179,26 @@
         background-color: $colorFFF;
         padding: 43px 17px 48px;
         border-radius: 8px;
-        .desc{
+        margin-top: 20px;
+        .desc {
           font-size: 15px;
           font-weight: 400;
           line-height: 20px;
           color: $block;
         }
       }
-      .process-box{
+
+      .process-box {
         margin-top: 58px;
-        .net-text{
+
+        .net-text {
           font-weight: 500;
           font-size: 18px;
           font-family: DIN BlackAlternate;
           line-height: 23px;
           color: $color999;
         }
+
         .number-box {
           height: 48px;
           line-height: 48px;
@@ -172,7 +214,8 @@
           }
         }
       }
-      .stake-btn{
+
+      .stake-btn {
         cursor: pointer;
         margin-top: 34px;
         width: 100%;
@@ -187,22 +230,27 @@
       }
     }
   }
-  .historical-out-box{
+
+  .historical-out-box {
     padding: 72px 0;
     background-color: $bgColor;
-    .historical-box{
+
+    .historical-box {
       .sub-title-box {
-        .text1{
+        .text1 {
           padding-top: 16px;
         }
+
         .text1, .text2 {
           font-size: 34px;
           line-height: 41px;
           color: $block;
         }
+
         .text2 {
           color: $emColor;
         }
+
         .text3 {
           font-size: 23px;
           line-height: 28px;
@@ -210,24 +258,28 @@
           padding-bottom: 16px;
         }
       }
-      .historical-item{
+
+      .historical-item {
         width: 300px;
         height: 464px;
         background: #F1F3F6;
         border-radius: 8px;
         padding: 80px 22px 29px;
-        .icon-img{
+
+        .icon-img {
           width: 96px;
           height: 96px;
           margin: 0 auto;
         }
-        .number-box{
+
+        .number-box {
           font-size: 48px;
           font-weight: 600;
           color: $block;
           margin-top: 56px;
           line-height: 57px;
-          .currency-b{
+
+          .currency-b {
             font-size: 19px;
             font-weight: 400;
             line-height: 23px;
@@ -235,12 +287,14 @@
             padding-bottom: 11px;
           }
         }
-        .line{
+
+        .line {
           height: 1px;
           background-color: #e5e5e5;
           width: 100%;
         }
-        .title{
+
+        .title {
           margin-top: 15px;
           font-size: 18px;
           font-family: DIN BlackAlternate;
@@ -248,7 +302,8 @@
           line-height: 30px;
           color: $block;
         }
-        .sub-title{
+
+        .sub-title {
           margin-top: 12px;
           font-size: 12px;
           font-weight: 400;
@@ -258,15 +313,19 @@
       }
     }
   }
-  .pool-out-box{
+
+  .pool-out-box {
     padding: 102px 0;
     background-color: $emColor;
-    .pool-box{
+
+    .pool-box {
       .sub-title-box {
         border-bottom-color: $bgColor;
-        .line1, .line2{
+
+        .line1, .line2 {
           background-color: $bgColor;
         }
+
         .text1 {
           font-size: 33px;
           line-height: 60px;
@@ -285,7 +344,8 @@
           color: $block;
         }
       }
-      .pool-item{
+
+      .pool-item {
         padding: 58px 24px;
         width: 454px;
         height: 415px;
@@ -294,15 +354,18 @@
         border-radius: 8px;
         border: 1px solid #707070;
         margin-left: 17px;
-        &:first-child{
+
+        &:first-child {
           margin-left: 0;
         }
-        .icon-img{
+
+        .icon-img {
           width: 144px;
           height: 140px;
           margin: 0 auto;
         }
-        .title{
+
+        .title {
           margin-top: 40px;
           font-size: 30px;
           font-family: DIN BlackAlternate;
@@ -310,7 +373,8 @@
           line-height: 37px;
           color: $block;
         }
-        .desc{
+
+        .desc {
           margin-top: 25px;
           font-size: 18px;
           font-weight: 400;
@@ -320,8 +384,10 @@
       }
     }
   }
-  .liquidity-box{
+
+  .liquidity-box {
     padding: 88px 0;
+
     .sub-title-box {
       .text1 {
         font-size: 49px;
@@ -345,9 +411,11 @@
         color: $emColor;
       }
     }
-    .liquidity-tab{
+
+    .liquidity-tab {
       border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-      .liquidity-tab-item{
+
+      .liquidity-tab-item {
         text-align: center;
         width: 140px;
         font-weight: 600;
@@ -357,10 +425,12 @@
         padding-bottom: 14px;
         cursor: pointer;
         font-size: 30px;
-        &.active{
+
+        &.active {
           color: $emColor;
         }
-        &.active:after{
+
+        &.active:after {
           content: '';
           position: absolute;
           bottom: -2px;
@@ -371,28 +441,33 @@
         }
       }
     }
-    .liquidity-info-box{
+
+    .liquidity-info-box {
       background-color: #F1F3F6;
       border-radius: 8px;
       padding-left: 23px;
       margin-top: 36px;
-      .liquidity-info-item{
+
+      .liquidity-info-item {
         padding-top: 36px;
         height: 168px;
-        .title{
+
+        .title {
           font-size: 18px;
           font-family: DIN BlackAlternate;
           font-weight: 400;
           line-height: 23px;
           color: $color999;
         }
-        .number-box{
+
+        .number-box {
           font-size: 48px;
           font-weight: 600;
           color: $block;
           margin-top: 27px;
           line-height: 48px;
-          .currency-b{
+
+          .currency-b {
             font-size: 19px;
             font-weight: 400;
             line-height: 23px;
@@ -402,25 +477,31 @@
         }
       }
     }
-    .liquidity-main{
+
+    .liquidity-main {
       margin-top: 30px;
-      .liquidity-text-box{
+
+      .liquidity-text-box {
         width: 380px;
         margin-right: 27px;
-        .liquidity-text-item{
+
+        .liquidity-text-item {
           font-size: 24px;
           font-weight: 500;
           line-height: 30px;
           color: $block;
-          &:last-child{
+
+          &:last-child {
             margin-top: 24px;
           }
-          .icon-img{
+
+          .icon-img {
             width: 30px;
             height: 30px;
             margin-right: 10px;
           }
-          .text-desc{
+
+          .text-desc {
             margin-top: 12px;
             font-size: 18px;
             font-weight: 400;
@@ -429,39 +510,48 @@
           }
         }
       }
-      .input-item{
+
+      .input-item {
         margin-top: 28px;
-        &:first-child{
+
+        &:first-child {
           margin-top: 0;
         }
-        .input-item-title{
+
+        .input-item-title {
           font-size: 24px;
           font-weight: 400;
           line-height: 28px;
           color: $block;
-          .input-item-title-icon{
+
+          .input-item-title-icon {
             width: 30px;
             height: 30px;
             margin-right: 5px;
           }
         }
-        .space-line{
+
+        .space-line {
           width: 150px;
         }
-        .currency-input{
+
+        .currency-input {
           margin-top: 15px;
           height: 64px;
           border: 1px solid #E6E6E6;
           border-radius: 4px;
           padding-left: 15px;
           position: relative;
-          &.hold-select{
+
+          &.hold-select {
             padding: 0 20px;
           }
-          .my-number-input{
+
+          .my-number-input {
             font-size: 18px;
           }
-          .currency{
+
+          .currency {
             font-size: 14px;
             font-weight: 400;
             color: #303030;
@@ -470,22 +560,26 @@
             border-radius: 0px 4px 4px 0px;
             text-align: center;
             line-height: 64px;
-            &.write{
+
+            &.write {
               width: 130px;
             }
           }
-          &.option-type-list{
+
+          &.option-type-list {
             width: 100%;
             border-color: $emColor;
             text-align: center;
             height: 100%;
             padding-left: 0;
-            .option-type-item{
+
+            .option-type-item {
               cursor: pointer;
               font-size: 20px;
               color: $emColor;
               line-height: 64px;
-              &.active{
+
+              &.active {
                 background-color: $emColor;
                 color: $colorFFF;
               }
@@ -493,7 +587,8 @@
           }
         }
       }
-      .btn-liquidity-deposit{
+
+      .btn-liquidity-deposit {
         cursor: pointer;
         margin-top: 58px;
         width: 100%;

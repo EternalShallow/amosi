@@ -11,73 +11,86 @@
           <div class="text2">EArinings</div>
           <div class="text3">DYnamic</div>
         </div>
-        <div class="box-flex1 con-box display-flex box-around">
-          <div class="box1">
-            <div class="display-flex box-around">
-              <div class="deposit-item">
-                <div>Liquidity Provided</div>
-                <div class="number-box display-flex box-center-Y">
-                  <div>0</div>
-                  <div class="currency-a">WBTC</div>
-                </div>
-                <div class="display-flex btn-deposit-out">
-                  <div class="btn-deposit no-select">DEPOSIT</div>
-                </div>
+        <div class="box-flex1 con-box">
+          <div class="earn-tab display-flex box-center-Y">
+            <div class="earn-tab-item no-select display-flex box-center-Y" :class="{active: liquidity.index === i}" v-for="(v, i) in liquidity.list" :key="`earn-item-${i}`" @click="changeLiquidity(i)">
+              <div class="item-img">
+                <img :src="v.icon_url" alt="">
               </div>
-              <div class="deposit-item">
-                <div>Net P&L</div>
-                <div class="number-box display-flex box-center-Y">
-                  <div>0</div>
-                  <div class="currency-a">WBTC</div>
-                </div>
-                <div class="display-flex btn-deposit-out">
-                  <div class="btn-deposit no-select">DEPOSIT</div>
-                </div>
-              </div>
-            </div>
-            <div class="earn-info">
-              <div class="rate-box">
-                <div class="text display-flex box-center-Y">
-                  <div>Your Share in the Pool</div>
-                  <div class="box-flex1"></div>
-                  <div>WBTC Pool Si</div>
-                </div>
-                <div class="rate-text display-flex box-center-Y">
-                  <div>100%</div>
-                  <div class="box-flex1"></div>
-                  <div>568.914WBTC</div>
-                </div>
-                <div class="rate-line-out">
-                  <div class="rate-line"></div>
-                </div>
-                <div class="pl-box display-flex box-center-Y">
-                  <div class="icon-img"><img src="../../assets/image/icon_echart@2x.png" alt=""></div>
-                  <div>P&L DYNAMICS</div>
-                </div>
-                <div class="stake-chart" id="stakeChart"></div>
+              <div class="box-flex1">
+                <div class="name">{{v.currency}} Pool</div>
+                <div class="desc">{{v.desc}}</div>
               </div>
             </div>
           </div>
-          <div class="box2">
-            <div class="desc">Option contract value dynamics depending
-                              on the price of an underlying:</div>
-            <div class="process-box display-flex box-center-X">
-              <v-progress-circular
-                :width="20"
-                :size="238"
-                :rotate="360"
-                :value="liquidityValue"
-                color="indigo darken-2"
-              >
-                <div class="net-text">Net P&L</div>
-                <div class="number-box display-flex box-center-end">
-                  <div>{{ liquidityValue }}</div>
-                  <div class="currency-a">WBTC</div>
+          <div class="display-flex box-around">
+            <div class="box1">
+              <div class="display-flex box-around">
+                <div class="deposit-item">
+                  <div>Liquidity Provided</div>
+                  <div class="number-box display-flex box-center-Y">
+                    <div>0</div>
+                    <div class="currency-a">WBTC</div>
+                  </div>
+                  <div class="display-flex btn-deposit-out">
+                    <div class="btn-deposit no-select">DEPOSIT</div>
+                  </div>
                 </div>
-              </v-progress-circular>
+                <div class="deposit-item">
+                  <div>Net P&L</div>
+                  <div class="number-box display-flex box-center-Y">
+                    <div>0</div>
+                    <div class="currency-a">WBTC</div>
+                  </div>
+                  <div class="display-flex btn-deposit-out">
+                    <div class="btn-deposit no-select">WITHDRAW NET PROFITS</div>
+                  </div>
+                </div>
+              </div>
+              <div class="earn-info">
+                <div class="rate-box">
+                  <div class="text display-flex box-center-Y">
+                    <div>Your Share in the Pool</div>
+                    <div class="box-flex1"></div>
+                    <div>WBTC Pool Si</div>
+                  </div>
+                  <div class="rate-text display-flex box-center-Y">
+                    <div>100%</div>
+                    <div class="box-flex1"></div>
+                    <div>568.914WBTC</div>
+                  </div>
+                  <div class="rate-line-out">
+                    <div class="rate-line"></div>
+                  </div>
+                  <div class="pl-box display-flex box-center-Y">
+                    <div class="icon-img"><img src="../../assets/image/icon_echart@2x.png" alt=""></div>
+                    <div>P&L DYNAMICS</div>
+                  </div>
+                  <div class="stake-chart" id="stakeChart"></div>
+                </div>
+              </div>
             </div>
-            <div v-if="account" class="stake-btn no-select" @click="withdraw">WIRHDRAW</div>
-            <div v-else class="stake-btn no-select" @click="connectAccount">WAITING FOR CONNECTION</div>
+            <div class="box2">
+              <div class="desc">Option contract value dynamics depending
+                                on the price of an underlying:</div>
+              <div class="process-box display-flex box-center-X">
+                <v-progress-circular
+                  :width="20"
+                  :size="238"
+                  :rotate="360"
+                  :value="liquidityValue"
+                  color="indigo darken-2"
+                >
+                  <div class="net-text">Net P&L</div>
+                  <div class="number-box display-flex box-center-end">
+                    <div>{{ liquidityValue }}</div>
+                    <div class="currency-a">WBTC</div>
+                  </div>
+                </v-progress-circular>
+              </div>
+              <div v-if="account" class="stake-btn no-select" @click="withdraw">WIRHDRAW</div>
+              <div v-else class="stake-btn no-select" @click="connectAccount">WAITING FOR CONNECTION</div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,29 +1,29 @@
 <template>
   <div class="reward-box">
-    <div class="user-info center-width">
-      <div class="avatar-img"><img src="../../assets/image/logo@2x.png" alt=""></div>
-      <div class="user-name">BONDING</div>
-      <div class="balance-list display-flex box-center-Y">
-        <div class="balance-item">
-          <div class="title">Your Transferrable <br>
-                             GlC Holdings
-          </div>
-          <div class="amount">3345</div>
-        </div>
-        <div class="balance-item">
-          <div class="title">Your Staked Hegic</div>
-          <div class="amount">345</div>
-        </div>
-        <div class="balance-item">
-          <div class="title">Current HEGIC Price</div>
-          <div class="amount">$3345</div>
-        </div>
-        <div class="balance-item">
-          <div class="title">Total USD Value</div>
-          <div class="amount">21312</div>
-        </div>
-      </div>
-    </div>
+<!--    <div class="user-info center-width">-->
+<!--      <div class="avatar-img"><img src="../../assets/image/logo@2x.png" alt=""></div>-->
+<!--      <div class="user-name">BONDING</div>-->
+<!--      <div class="balance-list display-flex box-center-Y">-->
+<!--        <div class="balance-item">-->
+<!--          <div class="title">Your Transferrable <br>-->
+<!--                             GlC Holdings-->
+<!--          </div>-->
+<!--          <div class="amount">3345</div>-->
+<!--        </div>-->
+<!--        <div class="balance-item">-->
+<!--          <div class="title">Your Staked Hegic</div>-->
+<!--          <div class="amount">345</div>-->
+<!--        </div>-->
+<!--        <div class="balance-item">-->
+<!--          <div class="title">Current HEGIC Price</div>-->
+<!--          <div class="amount">$3345</div>-->
+<!--        </div>-->
+<!--        <div class="balance-item">-->
+<!--          <div class="title">Total USD Value</div>-->
+<!--          <div class="amount">21312</div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="interface-box center-width display-flex box-center-start">
       <div class="sub-title-box">
         <div class="display-flex box-center-end">
@@ -114,11 +114,11 @@
             <div class="end-item no-select" @click="changeEndTab(i)" :class="{active: endTab.index === i}"
                  v-for="(v, i) in endTab.list" :key="`endTab-list-${i}`" v-html="v.currency"></div>
           </div>
-          <div class="total-box display-flex box-center-Y">
-            <div class="total-title">Total Provided:</div>
-            <div class="emColor">14.780.276</div>
-            <div class="currency-text">writeETH</div>
-          </div>
+<!--          <div class="total-box display-flex box-center-Y">-->
+<!--            <div class="total-title">Total Provided:</div>-->
+<!--            <div class="emColor">14.780.276</div>-->
+<!--            <div class="currency-text">writeETH</div>-->
+<!--          </div>-->
           <div class="display-flex box-center-Y total-list">
             <div class="total-item stake-earn" v-for="(v, i) in stakeEarnList" :key="`stake-list${i}`">
               <div class="icon-img"><img :src="v.icon_url" alt=""></div>
