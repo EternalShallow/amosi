@@ -15,7 +15,6 @@ export default {
       receive: '',
       allowance: 0,
       currentLiquidity: null,
-      currencyContract: null,
       poolContract: null,
       isApprove: true,
       totalBalance: 0,
@@ -59,7 +58,6 @@ export default {
         list: [
           {
             currency: 'HBTC',
-            contract: process.env.stake_HBTC,
             contractCurrency: process.env.currency_HBTC,
             contractPool: process.env.pool_HT,
             icon_url: require('../../../assets/image/icon_pool_1@2x.png'),
@@ -67,13 +65,11 @@ export default {
           }, {
             currency: 'HETH',
             contractCurrency: process.env.currency_HETH,
-            contract: process.env.stake_HETH,
             contractPool: process.env.pool_HT,
             icon_url: require('../../../assets/image/icon_pool_2@2x.png'),
             desc: 'Provide ETH to this pool to start selling ETH call and put options and earning yield on ETH'
           }, {
             currency: 'HT',
-            contract: process.env.stake_HT,
             contractCurrency: process.env.currency_HT,
             contractPool: process.env.pool_HT,
             icon_url: require('../../../assets/image/icon_pool_2@2x.png'),
@@ -167,8 +163,12 @@ export default {
       console.log(that.liquidity.list[that.liquidity.index])
       try {
         that.currentLiquidity = that.liquidity.list[that.liquidity.index]
-        that.currencyContract = useTokenContract(that.currentLiquidity.contractCurrency, COIN_ABI.currency_HT)
         that.poolContract = useTokenContract(that.currentLiquidity.contractPool, COIN_ABI.pool_HT)
+        // if (that.currentLiquidity.currency === 'HT') {
+        //   that.poolContract = useTokenContract(that.currentLiquidity.contractPool, COIN_ABI.pool_HT)
+        // } else {
+        //   that.poolContract = useTokenContract(that.currentLiquidity.contractPool, COIN_ABI.pool_HBTC)
+        // }
         console.log(that.poolContract)
         const totalBalance = await that.poolContract.totalBalance()
         const totalSupply = await that.poolContract.totalSupply()

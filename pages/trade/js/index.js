@@ -16,6 +16,9 @@ export default {
           currency: 'HBTC',
           contract: process.env.options_HBTC
         }, {
+          currency: 'ETH',
+          contract: process.env.options_HBTC
+        }, {
           currency: 'HT',
           contract: process.env.options_HT
         }],

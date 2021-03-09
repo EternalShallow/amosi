@@ -123,26 +123,26 @@
         </div>
       </div>
     </div>
-    <div class="pool-out-box">
-      <div class="pool-box center-width display-flex box-center-start">
-        <div class="sub-title-box">
-          <div class="display-flex box-center-end">
-            <div class="line1"></div>
-            <div class="box-flex1 line2"></div>
-          </div>
-          <div class="text1">SWITCH THE</div>
-          <div class="text2">ACTIVE</div>
-          <div class="text3">POOL</div>
-        </div>
-        <div class="box-flex1 con-box display-flex box-center-Y">
-          <div class="pool-item" v-for="(v, i) in poolList" :key="`pool-list-${i}`">
-            <div class="icon-img"><img :src="v.icon_url" alt=""></div>
-            <div class="title">{{v.title}}</div>
-            <div class="desc">{{v.desc}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--    <div class="pool-out-box">-->
+<!--      <div class="pool-box center-width display-flex box-center-start">-->
+<!--        <div class="sub-title-box">-->
+<!--          <div class="display-flex box-center-end">-->
+<!--            <div class="line1"></div>-->
+<!--            <div class="box-flex1 line2"></div>-->
+<!--          </div>-->
+<!--          <div class="text1">SWITCH THE</div>-->
+<!--          <div class="text2">ACTIVE</div>-->
+<!--          <div class="text3">POOL</div>-->
+<!--        </div>-->
+<!--        <div class="box-flex1 con-box display-flex box-center-Y">-->
+<!--          <div class="pool-item" v-for="(v, i) in poolList" :key="`pool-list-${i}`">-->
+<!--            <div class="icon-img"><img :src="v.icon_url" alt=""></div>-->
+<!--            <div class="title">{{v.title}}</div>-->
+<!--            <div class="desc">{{v.desc}}</div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="liquidity-box center-width display-flex box-center-start">
       <div class="sub-title-box">
         <div class="display-flex box-center-end">
