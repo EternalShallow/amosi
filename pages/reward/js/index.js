@@ -1,6 +1,6 @@
-import { useTokenContract } from '../../../utils/web3/web3Utils'
+import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
-import { useContractMethods } from '../../../utils/web3/contractEvent'
+import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
 import { keepPoint } from '../../../utils/function'
 import { approveEvent } from '../../../utils/web3/contractApprove'
 let that
@@ -84,6 +84,26 @@ export default {
           sub_title: 'Unlock writrETH ta be able to withdraw awards in rHEGIC tokens your ETH from the liquidity pool'
         }
       ],
+      stakeTab: {
+        list: [
+          {
+            currency: 'HBTC',
+            contract: process.env.stake_reward_HBTC,
+            contractPool: process.env.stake_HBTC
+          },
+          {
+            currency: 'ETH',
+            contract: process.env.stake_reward_ETH,
+            contractPool: process.env.stake_HETH
+          },
+          {
+            currency: 'HT',
+            contract: process.env.stake_reward_HT,
+            contractPool: process.env.stake_HT
+          }
+        ],
+        index: 0
+      },
       stakeEarnList: [
         {
           icon_url: require('../../../assets/image/icon_reward_stake_1@2x.png'),
@@ -106,7 +126,7 @@ export default {
         {
           icon_url: require('../../../assets/image/icon_reward_stake_3@2x.png'),
           balance: 0,
-          type: 'clalm',
+          type: 'claim',
           currency: 'ETH',
           btn_text: 'CLALM REWARDA',
           title: 'Rewards',
@@ -293,6 +313,9 @@ export default {
           claim: 123
         }
       ],
+      putAmount: '',
+      getAmount: '',
+      getAmountOriginal: '',
       boundTab: {
         list: ['BUY', 'SELL'],
         index: 0
@@ -409,8 +432,79 @@ export default {
     changeUtilizationTab (i) {
       this.utilizationTab.index = i
     },
+    // bound start
     changeBoundTab (i) {
       this.boundTab.index = i
+      that.putAmount = ''
+      that.getAmountOriginal = ''
+      that.getAmount = ''
+    },
+    async changePutAmount (val) {
+      if (!val) {
+        that.getAmountOriginal = ''
+        that.getAmount = ''
+        return
+      }
+      const tokenContract = useTokenContractWeb3(COIN_ABI.buy_sell, process.env.buy_sell_HT)
+      let checkAmount = 0
+      if (that.boundTab.index === 0) {
+        checkAmount = await tokenContract.methods.checkBuy(that.$web3_http.utils.toWei(parseFloat(val).toString())).call()
+      } else {
+        checkAmount = await tokenContract.methods.checkSell(that.$web3_http.utils.toWei(parseFloat(val).toString())).call()
+      }
+      that.getAmountOriginal = checkAmount
+      that.getAmount = parseFloat(keepPoint(that.$web3_http.utils.fromWei(checkAmount), 6))
+      console.log(that.getAmount)
+    },
+    buy () {
+      const tokenContract = useTokenContractWeb3(COIN_ABI.buy_sell, process.env.buy_sell_HT)
+      sendTransactionEvent(
+        tokenContract.methods.buy(
+          that.$web3_http.utils.toWei(parseFloat(that.putAmount).toString())
+        )
+          .send({
+            from: that.account,
+            value: that.getAmountOriginal
+          }), {
+          summary: `buy ${that.putAmount} HT`
+        }, function () {
+          that.putAmount = ''
+          that.getAmountOriginal = ''
+          that.getAmount = ''
+          console.log('buy success。。。')
+        })
+    },
+    async sell () {
+      const tokenContract = useTokenContract(process.env.buy_sell_HT, COIN_ABI.buy_sell)
+      const token = await tokenContract.token()
+      const tokenContract2 = useTokenContract(token, COIN_ABI.r_seeweed)
+      const allowance = await tokenContract2.allowance(that.account, process.env.buy_sell_HT)
+      const allowanceFormat = allowance.toString()
+      if (parseInt(allowanceFormat) >= parseInt(that.$web3_http.utils.toWei(parseFloat(that.putAmount).toString()))) {
+        await that.sellSure()
+      } else {
+        approveEvent(process.env.buy_sell_HT, {
+          approve_amount: that.putAmount,
+          symbol: 'HT',
+          address: token,
+          wei: 'ether'
+        }, tokenContract2, function () {
+          that.sellSure()
+        })
+      }
+    },
+    async sellSure () {
+      const tokenContract = useTokenContract(process.env.buy_sell_HT, COIN_ABI.buy_sell)
+      await useContractMethods({
+        contract: tokenContract,
+        methodName: 'sell',
+        parameters: [
+          that.$web3_http.utils.toWei(parseFloat(that.putAmount).toString())
+        ]
+      }, function () {
+        console.log('sell success...')
+      })
     }
+    // bound start
   }
 }

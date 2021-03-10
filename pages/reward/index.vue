@@ -106,10 +106,10 @@
           </div>
         </div>
         <div v-show="interfaceTab.list[interfaceTab.index].type === 'stakeEarn'">
-          <div class="item-title">HOLD STAKING LOTS AND EARN WBTC OR ETH</div>
-          <div class="item-desc">You need 888,000 HEGIC for a staking lot. ou can buy a staking lot by converting
-                                 888,000 HEGIC into a staking lot that you will be able to stake for receiving a share
-                                 of staking rewards distributed among lots holder.One lot can be used to receive rewards
+          <div class="item-title">HOLD STAKING POTS AND EARN WBTC OR ETH</div>
+          <div class="item-desc">You need 888,000 HEGIC for a staking pot. ou can buy a staking pot by converting
+                                 888,000 HEGIC into a staking pot that you will be able to stake for receiving a share
+                                 of staking rewards distributed among pots holder.One pot can be used to receive rewards
                                  in WBTC or ETH Current rewards size: 1% of each options size.
           </div>
           <div class="end-tab display-flex box-center-Y">
@@ -190,21 +190,22 @@
                   <div class="box-flex1">You are buying this amount of HEGIC</div>
                 </div>
                 <div class="display-flex box-center-Y currency-input">
-                  <y-number-input :point="6" ></y-number-input>
+                  <y-number-input :point="6" v-model="putAmount" @input="changePutAmount"></y-number-input>
                   <div class="currency">HEIGC</div>
                 </div>
               </div>
               <div class="input-item">
                 <div class="display-flex box-center-Y input-item-title">
                   <div class="input-item-title-icon"><img src="../../assets/image/icon_trade_2@2x.png" alt=""></div>
-                  <div class="box-flex1">You are sending this amount of ETH</div>
+                  <div class="box-flex1">You are sending this amount of HT</div>
                 </div>
                 <div class="display-flex box-center-Y currency-input">
-                  <y-number-input :point="6" ></y-number-input>
-                  <div class="currency">ETH</div>
+                  <y-number-input :point="6" v-model="getAmount" :readonly="true"></y-number-input>
+                  <div class="currency">HT</div>
                 </div>
               </div>
-              <div class="btn-liquidity-deposit no-select">BUY</div>
+              <div class="btn-liquidity-deposit no-select" v-show="boundTab.index === 0" @click="buy">BUY</div>
+              <div class="btn-liquidity-deposit no-select" v-show="boundTab.index === 1" @click="sell">SELL</div>
             </div>
           </div>
         </div>
@@ -218,7 +219,7 @@
               </div>
             </div>
             <div class="box-flex1">
-              <div class="token-title">Active Lots</div>
+              <div class="token-title">Active Pots</div>
               <div class="number-box display-flex box-center-end">
                 <div>122131</div>
               </div>

@@ -1,5 +1,5 @@
 <template>
-  <input class="my-number-input" @focus="focus" type="text" :placeholder="placeholder" v-model="inputModel">
+  <input class="my-number-input" :readonly="readonly" @focus="focus" type="text" :placeholder="placeholder" v-model="inputModel">
 </template>
 <script>
 let that
@@ -10,6 +10,9 @@ export default {
       default: 0
     },
     is_disabled: {
+      default: false
+    },
+    readonly: {
       default: false
     },
     max: Number,
