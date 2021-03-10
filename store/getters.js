@@ -10,5 +10,8 @@ export default {
   },
   getTransactions (state) {
     return state.transactions
+  },
+  getDialogConfirm (state) {
+    return state.dialogConfirm
   }
 }

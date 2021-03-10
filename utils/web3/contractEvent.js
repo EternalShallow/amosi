@@ -78,7 +78,7 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
   }
   // const estimatedGas = await getGasLimit(contract, methodName, parameters)
   let method
-  if (parameters.length < 1) {
+  if (parameters.length < 1 || !parameters) {
     method = contract[methodName]()
   } else if (parameters.length === 1) {
     method = contract[methodName](parameters[0])
@@ -99,6 +99,6 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
   })
     .catch((error) => {
       console.error('Failed to request', error)
-      alert(error.data.message)
+      alert(error.message)
     })
 }

@@ -25,7 +25,7 @@ export async function approveEvent (spender, token, tokenContract, callback) {
   let approveAmount = 0
   if (process.client) {
     const { $web3_http, $store } = window.$nuxt
-    approveAmount = $web3_http.utils.toWei(token.approve_amount.toString(), token.wei)
+    approveAmount = $web3_http.utils.toWei(parseFloat(token.approve_amount).toString(), token.wei)
     console.log($store.state.accounts[0])
     console.log(tokenContract.interface.getFunction('balanceOf'))
   }

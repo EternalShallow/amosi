@@ -54,8 +54,8 @@
           </div>
           <div class="total-box display-flex box-center-Y">
             <div class="total-title">Total Provided:</div>
-            <div class="emColor">14.780.276</div>
-            <div class="currency-text">writeETH</div>
+            <div class="emColor">{{totalProvided}}</div>
+            <div class="currency-text">write{{currentCurrencyEnd.currency}}</div>
           </div>
           <div class="display-flex box-center-Y total-list">
             <div class="total-item" v-for="(v, i) in endTotalList" :key="`total-list${i}`">
@@ -67,7 +67,9 @@
               <div class="line"></div>
               <div class="title">{{v.title}}</div>
               <div class="sub-title">{{v.sub_title}}</div>
-              <div class="btn-total no-select">{{v.btn_text}}</div>
+              <div class="btn-total no-select" v-if="v.type === 'claim'" @click="getReward">{{v.btn_text}}</div>
+              <div class="btn-total no-select" v-if="v.type === 'lock'" @click="showLockToken=true">{{v.btn_text}}</div>
+              <div class="btn-total no-select" v-if="v.type === 'unlock'" @click="showUnlockToken=true">{{v.btn_text}}</div>
             </div>
           </div>
         </div>
@@ -253,6 +255,26 @@
           </div>
         </div>
       </div>
+      <dialogConfirm :isShow="showLockToken" @saveDialog="lockToken" @closeDialog="showLockToken=false">
+        <div class="dialog-title">Lock Token From The Pool</div>
+        <div class="dialog-input">
+          <div class="text">Amount for Lock Token:</div>
+          <div class="input-box display-flex box-center-Y">
+            <y-number-input v-model="lockTokenAmount" :placeholder="`Please input amount`" class="box-flex1" :point="6" :max="parseFloat(endTotalList[2].balance)"></y-number-input>
+            <div class="currency">{{currentCurrencyEnd.currency}}</div>
+          </div>
+        </div>
+      </dialogConfirm>
+      <dialogConfirm :isShow="showUnlockToken" @saveDialog="withdraw" @closeDialog="showUnlockToken=false">
+        <div class="dialog-title">Unlock Token From The Pool</div>
+        <div class="dialog-input">
+          <div class="text">Amount for Unlock Token:</div>
+          <div class="input-box display-flex box-center-Y">
+            <y-number-input v-model="unlockTokenAmount" :placeholder="`Please input amount`" class="box-flex1" :point="6" :max="parseFloat(endTotalList[2].balance)"></y-number-input>
+            <div class="currency">{{currentCurrencyEnd.currency}}</div>
+          </div>
+        </div>
+      </dialogConfirm>
     </div>
   </div>
 </template>

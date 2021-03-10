@@ -183,3 +183,22 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.dialog-title{
+  color: $emColor;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 20px;
+}
+.dialog-input{
+  .text{
+
+  }
+  .input-box{
+    margin-top: 10px;
+    border: 1px solid $bdColorf2;
+    border-radius: 8px;
+    padding: 5px 20px;
+  }
+}

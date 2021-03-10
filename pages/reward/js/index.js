@@ -1,5 +1,9 @@
-// let that
-import * as echarts from 'echarts'
+import { useTokenContract } from '../../../utils/web3/web3Utils'
+import COIN_ABI from '../../../utils/web3/coinABI'
+import { useContractMethods } from '../../../utils/web3/contractEvent'
+import { keepPoint } from '../../../utils/function'
+import { approveEvent } from '../../../utils/web3/contractApprove'
+let that
 export default {
   data () {
     return {
@@ -27,14 +31,30 @@ export default {
       endTab: {
         list: [
           {
-            currency: 'WBTC'
+            currency: 'WBTC',
+            contract: process.env.stake_reward_HBTC,
+            contractPool: process.env.pool_HT
           },
           {
-            currency: 'ETH'
+            currency: 'ETH',
+            contract: process.env.stake_reward_ETH,
+            contractPool: process.env.pool_HT
+          },
+          {
+            currency: 'HT',
+            contract: process.env.stake_reward_HT,
+            contractPool: process.env.pool_HT
           }
         ],
         index: 0
       },
+      totalProvided: 0,
+      lockTokenAmount: '',
+      showLockToken: false,
+      showUnlockToken: false,
+      unlockTokenAmount: '',
+      initContractEnd: null,
+      currentCurrencyEnd: {},
       endTotalList: [
         {
           icon_url: require('../../../assets/image/icon_reward_end_1@2x.png'),
@@ -276,115 +296,118 @@ export default {
       boundTab: {
         list: ['BUY', 'SELL'],
         index: 0
-      },
-      option: {
-        grid: {
-          x: 10,
-          y: 30,
-          x2: 10,
-          y2: 10
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          axisLabel: {
-            show: false
-          },
-          axisTick: { // y轴刻度线
-            show: false
-          },
-          data: ['', '', '', '', '', '', '']
-        },
-        yAxis: {
-          axisLabel: {
-            show: false
-          },
-          type: 'value'
-        },
-        legend: {
-          data: ['Worthless Expiration', 'Unlimited Upside']
-        },
-        tooltip: {
-          trigger: 'axis', // 坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'line' // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        series: [
-          {
-            name: 'Unlimited Upside',
-            itemStyle: {
-              normal: {
-                color: '#9CB918',
-                lineStyle: {
-                  color: '#9CB918'
-                }
-              }
-            },
-            data: [789, 932, 91, 934, 560, 670, 20],
-            type: 'line',
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.5, [{
-                  offset: 0,
-                  color: 'rgba(152, 180, 26, 0.5)'
-                }, {
-                  offset: 1,
-                  color: 'rgba(152, 180, 26, 0.05) '
-                }])
-              }
-            },
-            smooth: true
-          },
-          {
-            name: 'Worthless Expiration',
-            itemStyle: {
-              normal: {
-                color: '#C51313',
-                lineStyle: {
-                  color: '#C51313'
-                }
-              }
-            },
-            data: [820, 932, 901, 934, 1290, 330, 130],
-            type: 'line',
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.5, [{
-                  offset: 0,
-                  color: 'rgba(197, 19, 19, 0.5) '
-                }, {
-                  offset: 1,
-                  color: 'rgba(197, 19, 19, 0.05) '
-                }])
-              }
-            },
-            smooth: true
-          }
-        ]
       }
     }
   },
   mounted () {
-    // that = this
-    this.initChart()
+    this.initPage()
   },
   methods: {
-    initChart () {
-      var chartDom = document.getElementById('hegicChart')
-      var myChart = echarts.init(chartDom)
-      this.option && myChart.setOption(this.option)
+    initPage () {
+      that = this
+      that.account = that.$account
+      that.getEndInfo()
     },
     setAccount () {
+      this.initPage()
     },
+    // LIQUIDITY ENDING REWARDS start
+    changeEndTab (i) {
+      that.endTab.index = i
+      that.currentCurrencyEnd = that.endTab.list[that.endTab.index]
+      that.getEndInfo()
+    },
+    async getEndInfo () {
+      that.currentCurrencyEnd = that.endTab.list[that.endTab.index]
+      console.log(that.currentCurrencyEnd.currency)
+      that.endTotalList[1].currency = that.currentCurrencyEnd.currency
+      that.endTotalList[2].currency = that.currentCurrencyEnd.currency
+      // 初始化合约
+      that.initContractEnd = useTokenContract(that.currentCurrencyEnd.contract, COIN_ABI.stake_reward_ETH)
+      const contractPool = useTokenContract(that.currentCurrencyEnd.contractPool, COIN_ABI.pool_HT)
+      // Total Provide
+      const totalProvided = await that.initContractEnd.totalSupply()
+      that.totalProvided = parseFloat(keepPoint(that.$web3_http.utils.fromWei(totalProvided.toString()), 2))
+      if (!that.account) {
+        return
+      }
+      // Pool Liquidity mining rewards
+      const rewardsToken = await that.initContractEnd.rewardsToken()
+      const rewardsTokenContract = useTokenContract(rewardsToken, COIN_ABI.r_seeweed)
+      const rewardBalance = await rewardsTokenContract.balanceOf(that.account)
+      that.endTotalList[0].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(rewardBalance.toString()), 2))
+      // Your Address Balance
+      const balanceAddress = await contractPool.balanceOf(that.account)
+      that.endTotalList[1].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(balanceAddress.toString()), 2))
+      // locked
+      const balance = await that.initContractEnd.balanceOf(that.account)
+      that.endTotalList[2].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(balance.toString()), 2))
+    },
+    async getReward () {
+      console.log('getReward。。。')
+      await useContractMethods({
+        contract: that.initContractEnd,
+        methodName: 'getReward',
+        parameters: []
+      }, function () {
+        console.log('getReward success...')
+      })
+    },
+    async lockToken () {
+      if (!that.lockTokenAmount) {
+        return alert('amount 不能为空')
+      }
+      const contractPool = useTokenContract(that.currentCurrencyEnd.contractPool, COIN_ABI.pool_HT)
+      const allowance = await contractPool.allowance(that.account, that.currentCurrencyEnd.contractPool)
+      const allowanceFormat = allowance.toString()
+      if (parseInt(allowanceFormat) >= parseInt(that.$web3.utils.toWei(parseFloat(that.lockTokenAmount).toString()))) {
+        await that.lockTokenStake()
+      } else {
+        approveEvent(that.currentCurrencyEnd.contract, {
+          approve_amount: that.lockTokenAmount,
+          symbol: that.currentCurrencyEnd.currency,
+          address: that.currentCurrencyEnd.contract,
+          wei: 'ether'
+        }, contractPool, function () {
+          that.lockTokenStake()
+        })
+      }
+    },
+    async lockTokenStake () {
+      await useContractMethods({
+        contract: that.initContractEnd,
+        methodName: 'stake',
+        parameters: [
+          that.$web3_http.utils.toWei(parseFloat(that.lockTokenAmount).toString())
+        ]
+      }, function () {
+        that.showLockToken = false
+        that.getEndInfo()
+        console.log('stake success...')
+      })
+    },
+    async withdraw () {
+      if (!that.unlockTokenAmount) {
+        return alert('amount 不能为空')
+      }
+      await useContractMethods({
+        contract: that.initContractEnd,
+        methodName: 'withdraw',
+        parameters: [
+          that.$web3_http.utils.toWei(parseFloat(that.unlockTokenAmount).toString())
+        ]
+      }, function () {
+        that.showUnlockToken = false
+        that.getEndInfo()
+        console.log('withdraw success...')
+      })
+    },
+    // LIQUIDITY ENDING REWARDS end
     changeInterfaceTab (i) {
       this.interfaceTab.index = i
     },
     changeUtilizationTab (i) {
       this.utilizationTab.index = i
-    },
-    changeEndTab (i) {
-      this.endTab.index = i
     },
     changeBoundTab (i) {
       this.boundTab.index = i

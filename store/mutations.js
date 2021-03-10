@@ -7,6 +7,9 @@ export default {
   changeDialogAccount (state, payload) {
     state.dialogAccount = payload
   },
+  changeDialogConfirm (state, payload) {
+    state.dialogConfirm = payload
+  },
   changeAccounts (state, payload) {
     state.accounts = payload
   },

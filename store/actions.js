@@ -45,6 +45,9 @@ export default {
   updateDialogAccount (context, item) {
     context.commit('changeDialogAccount', item)
   },
+  updateDialogConfirm (context, item) {
+    context.commit('changeDialogConfirm', item)
+  },
   updateAccounts (context, item) {
     context.commit('changeAccounts', item)
   },
