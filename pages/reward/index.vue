@@ -260,7 +260,7 @@
         <div class="dialog-input">
           <div class="text">Amount for Lock Token:</div>
           <div class="input-box display-flex box-center-Y">
-            <y-number-input v-model="lockTokenAmount" :placeholder="`Please input amount`" class="box-flex1" :point="6" :max="parseFloat(endTotalList[2].balance)"></y-number-input>
+            <y-number-input v-model="lockTokenAmount" :placeholder="`Please input amount`" class="box-flex1" :point="6" :max="parseFloat(endTotalList[1].balance)"></y-number-input>
             <div class="currency">{{currentCurrencyEnd.currency}}</div>
           </div>
         </div>
