@@ -16,8 +16,14 @@ export default {
       currentLiquidity: null,
       poolContract: null,
       isApprove: true,
+      selfPoolBalance: 0,
+      balanceWrite: 0,
+      balanceRate: '0',
       totalBalance: 0,
       totalSupply: 0,
+      showWithdraw: false,
+      withdrawProfitAmount: '',
+      withdrawProfitWriteAmount: '',
       historicalList: [
         {
           icon_url: require('../../../assets/image/icon_historical_1@2x.png'),
@@ -88,7 +94,7 @@ export default {
     async initPage () {
       that = this
       await that.getContractInit()
-      console.log(MaxUint256)
+      console.log(MaxUint256.toHexString())
       if (that.$account) {
         that.account = that.$account
       }
@@ -115,6 +121,12 @@ export default {
         const totalSupply = await that.poolContract.totalSupply()
         that.totalBalance = parseFloat(that.$web3_http.utils.fromWei(totalBalance.toString()))
         that.totalSupply = parseFloat(that.$web3_http.utils.fromWei(totalSupply.toString()))
+        const shareOf = await that.poolContract.shareOf(that.account)
+        that.balanceRate = parseFloat(keepPoint(that.$web3_http.utils.fromWei(shareOf.toString()), 2))
+        that.selfPoolBalance = parseFloat(keepPoint(numMulti(that.balanceRate / 100, that.totalBalance), 4))
+        console.log(that.selfPoolBalance, that.totalBalance)
+        const balanceWrite = await that.poolContract.balanceOf(that.account)
+        that.balanceWrite = parseFloat(keepPoint(balanceWrite, 4))
       } catch (e) {
         console.log(e)
       }
@@ -126,14 +138,28 @@ export default {
       }
       that.amount = parseFloat(val)
       if (that.amount < that.totalBalance) {
-        console.log(numMulti(that.totalSupply, that.amount - 0.0001), numSub(that.totalBalance, that.amount - 0.0001))
+        console.log(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount))
         console.log(numDiv(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount)))
-        that.receive = parseFloat(keepPoint(numDiv(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount)), 8))
+        that.receive = parseFloat(keepPoint(numDiv(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount)), 4))
       } else {
-        console.log(numMulti(that.totalSupply, that.amount - 0.0001), numSub(that.totalBalance, that.amount - 0.0001))
-        that.receive = parseFloat(keepPoint(numDiv(numMulti(that.totalSupply, that.amount - 0.0001), numSub(that.totalBalance, that.amount - 0.0001)), 8))
+        console.log(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount))
+        that.receive = parseFloat(keepPoint(numDiv(numMulti(that.totalSupply, that.amount), numSub(that.totalBalance, that.amount)), 4))
       }
-      that.getAllowance()
+    },
+    changeWithdrawProfitWriteAmount (val) {
+      if (!val) {
+        that.withdrawProfitWriteAmount = ''
+        return
+      }
+      that.withdrawProfitAmount = parseFloat(val)
+      if (that.withdrawProfitAmount < that.totalBalance) {
+        that.withdrawProfitWriteAmount = numDiv(numMulti(that.totalSupply, that.withdrawProfitAmount), numSub(that.totalBalance, that.withdrawProfitAmount))
+      } else {
+        console.log(that.totalSupply, that.withdrawProfitAmount, that.totalBalance, that.withdrawProfitAmount)
+        console.log(numMulti(that.totalSupply, that.withdrawProfitAmount), numSub(that.totalBalance, that.withdrawProfitAmount))
+        console.log(numDiv(numMulti(that.totalSupply, that.withdrawProfitAmount), numSub(that.totalBalance, that.withdrawProfitAmount)))
+        that.withdrawProfitWriteAmount = numDiv(numMulti(that.totalSupply, that.withdrawProfitAmount), numSub(that.totalBalance, that.withdrawProfitAmount))
+      }
     },
     changeReceive (val) {
       if (!val) {
@@ -187,6 +213,30 @@ export default {
       }, function () {
         console.log('provide success...')
       })
+    },
+    async withdrawProfit () {
+      await useContractMethods({
+        contract: that.poolContract,
+        methodName: 'withdraw',
+        parameters: [
+          that.$web3_http.utils.toWei(that.withdrawProfitAmount.toString()),
+          MaxUint256.toHexString()
+        ]
+      }, function () {
+        that.withdrawProfitAmount = ''
+        that.showWithdraw = false
+        console.log(`withdraw ${that.withdrawProfitAmount} ${that.currentLiquidity.currency} success...`)
+      })
+      // const tokenContract = useTokenContractWeb3(COIN_ABI.pool_HT, that.currentLiquidity.contractPool)
+      // sendTransactionEvent(tokenContract.methods.withdraw(that.$web3_http.utils.toWei(that.withdrawProfitAmount.toString()), MaxUint256.toHexString()).send({
+      //   from: that.account
+      // }), {
+      //   summary: `withdraw ${that.withdrawProfitAmount} ${that.currentLiquidity.currency}`
+      // }, function () {
+      //   that.withdrawProfitAmount = ''
+      //   that.showWithdraw = false
+      //   console.log(`withdraw ${that.withdrawProfitAmount} ${that.currentLiquidity.currency} success...`)
+      // })
     }
   }
 }

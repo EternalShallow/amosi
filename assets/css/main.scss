@@ -201,4 +201,15 @@
     border-radius: 8px;
     padding: 5px 20px;
   }
+  .write-info{
+    text-align: center;
+    margin-top: 12px;
+    span{
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+  .write-balance{
+    margin-top: 10px;
+  }
 }
