@@ -19,7 +19,30 @@
             <p>If the price of underlying will rise higher than 1,601.25 during the next 1 day your option will expire worthless.</p>
             <p>If the price of underlying will fall down lower than 1,601.25 during the next 1 day you will be able to exercise your option and take profits.</p>
             <div class="price-desc">Option contract value dynamics depending on the price of an underlying:</div>
-            <div class="price-chart" id="priceChart"></div>
+            <div class="schedule-label-box display-flex box-center">
+              <div class="block"></div>
+              <div class="name">Unlimited Upside</div>
+              <div class="block green"></div>
+              <div class="name">Worthless Expiration</div>
+            </div>
+            <div class="schedule-box">
+              <div class="schedule-zone top">
+                <div class="schedule-line"></div>
+                <div class="schedule-line"></div>
+                <div class="schedule-line"></div>
+                <div class="current-price">Current: ${{tradeForm.strikePrice || 14.89}}</div>
+                <div class="strike-price">Strike: ${{tradeForm.strikePrice || 14.89}}</div>
+              </div>
+              <div class="schedule-line"></div>
+              <div class="schedule-line"></div>
+              <div class="schedule-line"></div>
+              <div class="schedule-zone bottom">
+                <div class="schedule-line"></div>
+                <div class="schedule-line"></div>
+                <div class="schedule-line"></div>
+                <div class="break-even">Break-even: ${{milliFormat(fees.breakEven)}}</div>
+              </div>
+            </div>
           </div>
           <div class="box-flex1">
             <div class="input-item">
@@ -45,7 +68,7 @@
                   </v-radio-group>
               </div>
               <div class="display-flex box-center-Y currency-input">
-                <y-number-input :point="6" v-model="tradeForm.optionSize" @input="changeVal"></y-number-input>
+                <y-number-input :placeholder="optionSizePlaceholder" :point="6" v-model="tradeForm.optionSize" @input="changeVal"></y-number-input>
                 <div class="currency">{{tradeTab.list[tradeTab.index].currency}}</div>
               </div>
             </div>
@@ -55,7 +78,7 @@
                 <div class="box-flex1">Strike  Price</div>
               </div>
               <div class="display-flex box-center-Y currency-input">
-                <y-number-input :point="6" v-model="tradeForm.strikePrice" @input="changeVal"></y-number-input>
+                <y-number-input :point="6" :placeholder="strikePricePlaceholder" v-model="tradeForm.strikePrice" @input="changeVal"></y-number-input>
                 <div class="currency">USD</div>
               </div>
             </div>
@@ -71,16 +94,16 @@
                 ></v-select>
               </div>
             </div>
-            <div class="display-flex box-center-Y trade-data-box">
-              <div class="box-flex1">
+            <div class="trade-data-box">
+              <div class="trade-data-item">
                 <div>Strike Price</div>
                 <div class="number">${{milliFormat(fees.strikePrice)}}</div>
               </div>
-              <div class="box-flex1">
+              <div class="trade-data-item">
                 <div>Total Cost</div>
                 <div class="number">${{milliFormat(fees.totalCost)}}</div>
               </div>
-              <div class="box-flex1">
+              <div class="trade-data-item">
                 <div>Break-even</div>
                 <div class="number">${{milliFormat(fees.breakEven)}}</div>
               </div>

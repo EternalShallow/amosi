@@ -2,7 +2,6 @@ import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3
 // import { BigNumber } from '@ethersproject/bignumber'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
-import * as echarts from 'echarts'
 import { timeToDate1 } from '../../../utils/function'
 
 let that
@@ -32,6 +31,8 @@ export default {
         '3week(21days)': 21,
         '4week(28days)': 28
       },
+      optionSizePlaceholder: '1',
+      strikePricePlaceholder: '14.98',
       optionsType: '1',
       tradeForm: {
         optionSize: '',
@@ -50,93 +51,7 @@ export default {
       },
       contractHead: ['Type', 'Size', 'Strike Price', 'Price Now', 'Break-even', 'P&L', 'Placed At', 'Expires in', 'Exercise', 'Share'],
       contractDataList: [],
-      price_HT: 14,
-      option: {
-        grid: {
-          x: 10,
-          y: 30,
-          x2: 10,
-          y2: 10
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          axisLabel: {
-            show: false
-          },
-          axisTick: { // y轴刻度线
-            show: false
-          },
-          data: ['', '', '', '', '', '', '']
-        },
-        yAxis: {
-          axisLabel: {
-            show: false
-          },
-          type: 'value'
-        },
-        legend: {
-          data: ['Worthless Expiration', 'Unlimited Upside']
-        },
-        tooltip: {
-          trigger: 'axis', // 坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'line' // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        series: [
-          {
-            name: 'Unlimited Upside',
-            itemStyle: {
-              normal: {
-                color: '#9CB918',
-                lineStyle: {
-                  color: '#9CB918'
-                }
-              }
-            },
-            data: [789, 932, 91, 934, 560, 670, 20],
-            type: 'line',
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.5, [{
-                  offset: 0,
-                  color: 'rgba(152, 180, 26, 0.5)'
-                }, {
-                  offset: 1,
-                  color: 'rgba(152, 180, 26, 0.05) '
-                }])
-              }
-            },
-            smooth: true
-          },
-          {
-            name: 'Worthless Expiration',
-            itemStyle: {
-              normal: {
-                color: '#C51313',
-                lineStyle: {
-                  color: '#C51313'
-                }
-              }
-            },
-            data: [820, 932, 901, 934, 1290, 330, 130],
-            type: 'line',
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.5, [{
-                  offset: 0,
-                  color: 'rgba(197, 19, 19, 0.5) '
-                }, {
-                  offset: 1,
-                  color: 'rgba(197, 19, 19, 0.05) '
-                }])
-              }
-            },
-            smooth: true
-          }
-        ]
-      }
+      price_HT: 14
     }
   },
   watch: {
@@ -151,14 +66,8 @@ export default {
   },
   mounted () {
     this.initPage()
-    this.initChart()
   },
   methods: {
-    initChart () {
-      var chartDom = document.getElementById('priceChart')
-      var myChart = echarts.init(chartDom)
-      this.option && myChart.setOption(this.option)
-    },
     changeTradeTab (i) {
       this.tradeTab.index = i
       this.getFees()
@@ -172,9 +81,12 @@ export default {
     },
     async getFees () {
       console.log(!this.tradeForm.strikePrice || !this.tradeForm.optionSize)
-      if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
-        return
-      }
+      const strikePrice = this.tradeForm.strikePrice || this.strikePricePlaceholder
+      const optionSize = this.tradeForm.optionSize || this.optionSizePlaceholder
+      // if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
+      //   return
+      // }
+      console.log(strikePrice, optionSize)
       const current_currency = this.tradeTab.list[this.tradeTab.index]
       console.log(current_currency.contract)
       const contract = current_currency.contract
@@ -184,22 +96,22 @@ export default {
         const fees = await this.getFeesResult(
           tokenContract,
           this.holdTime[this.tradeForm.hold] * 24 * 60 * 60,
-          this.tradeForm.optionSize,
-          this.tradeForm.strikePrice,
+          optionSize,
+          strikePrice,
           this.optionsType)
         this.fees = {
           total: fees.total.toString(),
           settlementFee: fees.settlementFee.toString(),
           strikeFee: fees.strikeFee.toString(),
           periodFee: fees.periodFee.toString(),
-          strikePrice: parseFloat(this.tradeForm.strikePrice),
+          strikePrice: parseFloat(strikePrice),
           totalFee: parseFloat(this.$web3_http.utils.fromWei(fees.total.toString(), 'ether'))
         }
         this.fees.totalCost = parseFloat(this.keepPoint(this.price_HT * this.fees.totalFee, 2))
         if (this.optionsType === '1') {
-          this.fees.breakEven = parseFloat(this.keepPoint(this.fees.strikePrice + (this.fees.totalCost / this.tradeForm.optionSize), 2))
+          this.fees.breakEven = parseFloat(this.keepPoint(strikePrice + (this.fees.totalCost / optionSize), 2))
         } else {
-          this.fees.breakEven = parseFloat(this.keepPoint(this.fees.strikePrice - (this.fees.totalCost / this.tradeForm.optionSize), 2))
+          this.fees.breakEven = parseFloat(this.keepPoint(strikePrice - (this.fees.totalCost / optionSize), 2))
         }
         console.log(this.fees)
       } catch (e) {
@@ -254,6 +166,7 @@ export default {
       that = this
       if (that.$account) {
         that.account = that.$account
+        this.getFees()
         that.getContractDataList()
       }
     },

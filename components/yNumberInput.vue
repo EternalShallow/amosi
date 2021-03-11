@@ -217,6 +217,7 @@ export default {
     outline: none; // 去除默认选中状态边框
     background-color: rgba(0, 0, 0, 0);// 透明背景
     text-align: left;
+    font-size: 20px;
     height: 44px;
     width: 100%;
   }

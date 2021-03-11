@@ -25,7 +25,7 @@
           </div>
           <div class="display-flex box-around">
             <div class="box1">
-              <div class="display-flex box-around">
+              <div class="deposit-list">
                 <div class="deposit-item">
                   <div>Liquidity Provided</div>
                   <div class="number-box display-flex box-center-Y">
@@ -49,6 +49,10 @@
               </div>
               <div class="earn-info">
                 <div class="rate-box">
+                  <div class="pl-box display-flex box-center-Y">
+                    <div class="icon-img"><img src="../../assets/image/icon_echart@2x.png" alt=""></div>
+                    <div>P&L DYNAMICS</div>
+                  </div>
                   <div class="text display-flex box-center-Y">
                     <div>Your Share in the Pool</div>
                     <div class="box-flex1"></div>
@@ -62,11 +66,6 @@
                   <div class="rate-line-out">
                     <div class="rate-line"></div>
                   </div>
-                  <div class="pl-box display-flex box-center-Y">
-                    <div class="icon-img"><img src="../../assets/image/icon_echart@2x.png" alt=""></div>
-                    <div>P&L DYNAMICS</div>
-                  </div>
-                  <div class="stake-chart" id="stakeChart"></div>
                 </div>
               </div>
             </div>
