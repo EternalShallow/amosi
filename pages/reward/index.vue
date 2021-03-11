@@ -37,7 +37,7 @@
       </div>
       <div class="con-box box-flex1">
         <div class="interface-tab display-flex box-center-Y">
-          <div class="interface-tab-item no-select" @click="changeInterfaceTab(i)"
+          <div class="interface-tab-item no-select" @click="changeInterfaceTab(v, i)"
                :class="{active: interfaceTab.index === i}" v-for="(v, i) in interfaceTab.list"
                :key="`interface-list-${i}`" v-html="v.name"></div>
         </div>
@@ -113,8 +113,8 @@
                                  in WBTC or ETH Current rewards size: 1% of each options size.
           </div>
           <div class="end-tab display-flex box-center-Y">
-            <div class="end-item no-select" @click="changeEndTab(i)" :class="{active: endTab.index === i}"
-                 v-for="(v, i) in endTab.list" :key="`endTab-list-${i}`" v-html="v.currency"></div>
+            <div class="end-item no-select" @click="changeStakeTab(i)" :class="{active: stakeTab.index === i}"
+                 v-for="(v, i) in stakeTab.list" :key="`endTab-list-${i}`" v-html="v.currency"></div>
           </div>
 <!--          <div class="total-box display-flex box-center-Y">-->
 <!--            <div class="total-title">Total Provided:</div>-->
@@ -125,13 +125,16 @@
             <div class="total-item stake-earn" v-for="(v, i) in stakeEarnList" :key="`stake-list${i}`">
               <div class="icon-img"><img :src="v.icon_url" alt=""></div>
               <div class="number-box display-flex box-center-end">
-                <div>{{v.balance}}</div>
+                <div v-if="v.type === 'stake'">{{v.balance}}/{{potTotalSupply}}</div>
+                <div v-else>{{milliFormat(v.balance)}}</div>
                 <div class="currency-b">{{v.currency}}</div>
               </div>
               <div class="line"></div>
               <div class="title">{{v.title}}</div>
               <div class="sub-title">{{v.sub_title}}</div>
-              <div class="btn-total no-select">{{v.btn_text}}</div>
+              <div class="btn-total no-select" v-if="v.type === 'withdraw'" @click="showStakeWithdraw = true">{{v.btn_text}}</div>
+              <div class="btn-total no-select" v-if="v.type === 'stake'" @click="showStakeBuy = true">{{v.btn_text}}</div>
+              <div class="btn-total no-select" v-if="v.type === 'claim'" @click="claimProfit">{{v.btn_text}}</div>
             </div>
           </div>
         </div>
@@ -273,6 +276,26 @@
           <div class="input-box display-flex box-center-Y">
             <y-number-input v-model="unlockTokenAmount" :placeholder="`Please input amount`" class="box-flex1" :point="6" :max="parseFloat(endTotalList[2].balance)"></y-number-input>
             <div class="currency">{{currentCurrencyEnd.currency}}</div>
+          </div>
+        </div>
+      </dialogConfirm>
+      <dialogConfirm :isShow="showStakeWithdraw" @saveDialog="stakeSell" @closeDialog="showStakeWithdraw=false">
+        <div class="dialog-title">Withdraw From The Pool</div>
+        <div class="dialog-input">
+          <div class="text">Amount for Total Stake:</div>
+          <div class="input-box display-flex box-center-Y">
+            <y-number-input v-model="stakeWithdrawAmount" :placeholder="`Please input amount`" class="box-flex1" :point="0" :max="parseFloat(stakeEarnList[1].balance)"></y-number-input>
+            <div class="currency">{{currentStakeTab.currency}}</div>
+          </div>
+        </div>
+      </dialogConfirm>
+      <dialogConfirm :isShow="showStakeBuy" @saveDialog="stakeBuy" @closeDialog="showStakeBuy=false">
+        <div class="dialog-title">Buy Pot From The Pool</div>
+        <div class="dialog-input">
+          <div class="text">Amount for SWF:</div>
+          <div class="input-box display-flex box-center-Y">
+            <y-number-input v-model="stakeBuyAmount" :placeholder="`Please input amount`" class="box-flex1" :point="0" :max="parseFloat(stakeEarnList[0].balance)"></y-number-input>
+            <div class="currency">SWF</div>
           </div>
         </div>
       </dialogConfirm>

@@ -1,7 +1,7 @@
 import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
-import { keepPoint } from '../../../utils/function'
+import { keepPoint, numDiv } from '../../../utils/function'
 import { approveEvent } from '../../../utils/web3/contractApprove'
 let that
 export default {
@@ -104,12 +104,19 @@ export default {
         ],
         index: 0
       },
+      showStakeWithdraw: false,
+      stakeWithdrawAmount: '',
+      showStakeBuy: false,
+      stakeBuyAmount: '',
+      currentStakeTab: {},
+      initContractStake: null,
+      potTotalSupply: 0,
       stakeEarnList: [
         {
           icon_url: require('../../../assets/image/icon_reward_stake_1@2x.png'),
           balance: 0,
           type: 'withdraw',
-          currency: 'RHEGIC2',
+          currency: 'SWF',
           btn_text: 'WITHDRAW',
           title: 'Total Staked',
           sub_title: 'Click the Claim Rewards button and confirm the transaction forreceiving ta be able to withdraw'
@@ -120,7 +127,7 @@ export default {
           type: 'stake',
           currency: 'ETH',
           btn_text: 'STAKE HEGIC',
-          title: 'Your Address Balance',
+          title: 'Your Pots',
           sub_title: 'Lock wniteETH to start receiving. You will need to manually claim HEGIC'
         },
         {
@@ -334,6 +341,91 @@ export default {
     setAccount () {
       this.initPage()
     },
+    // stake start
+    changeStakeTab (i) {
+      that.stakeTab.index = i
+      that.currentStakeTab = that.stakeTab.list[that.stakeTab.index]
+      that.getStakeInfo()
+    },
+    async getStakeInfo () {
+      that.currentStakeTab = that.stakeTab.list[that.stakeTab.index]
+      that.stakeEarnList[1].currency = that.currentStakeTab.currency
+      that.stakeEarnList[2].currency = that.currentStakeTab.currency
+      // 初始化合约
+      that.initContractStake = useTokenContract(that.currentStakeTab.contractPool, COIN_ABI.stake)
+      const seaweedAddress = await that.initContractStake.Seaweed()
+      const seaweedContract = useTokenContract(seaweedAddress, COIN_ABI.stake_seaweed)
+      const withdrawBalance = await seaweedContract.balanceOf(that.account)
+      that.stakeEarnList[0].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(withdrawBalance.toString()), 6))
+      const balance = await that.initContractStake.balanceOf(that.account)
+      that.potTotalSupply = await that.initContractStake.totalSupply()
+      that.stakeEarnList[1].balance = balance
+      const profitOf = await that.initContractStake.profitOf(that.account)
+      that.stakeEarnList[2].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(profitOf.toString()), 6))
+    },
+    async stakeSell () {
+      if (!that.stakeWithdrawAmount) {
+        return alert('amount 不能为空')
+      }
+      const seaweedAddress = await that.initContractStake.Seaweed()
+      // const seaweedContract = useTokenContract(seaweedAddress, COIN_ABI.stake_seaweed)
+      const allowance = await that.initContractStake.allowance(that.account, that.currentStakeTab.contractPool)
+      const allowanceFormat = allowance.toString()
+      console.log(allowanceFormat)
+      if (parseInt(allowanceFormat) >= parseInt(that.$web3_http.utils.toWei(parseFloat(that.stakeWithdrawAmount).toString()))) {
+        await that.stakeSureSell()
+      } else {
+        await approveEvent(that.currentStakeTab.contractPool, {
+          approve_amount: that.stakeWithdrawAmount,
+          symbol: 'SWF',
+          address: seaweedAddress,
+          wei: 'ether'
+        }, that.initContractStake, function () {
+          that.stakeSureSell()
+        })
+      }
+    },
+    async stakeSureSell () {
+      await useContractMethods({
+        contract: that.initContractStake,
+        methodName: 'sell',
+        parameters: [
+          that.$web3_http.utils.toWei(that.stakeWithdrawAmount.toString())
+        ]
+      }, function () {
+        that.showStakeWithdraw = false
+        that.getStakeInfo()
+        console.log('stake claimProfit success...')
+      })
+    },
+    async stakeBuy () {
+      if (!that.stakeBuyAmount) {
+        return alert('amount 不能为空')
+      }
+      await useContractMethods({
+        contract: that.initContractStake,
+        methodName: 'buy',
+        parameters: [
+          that.stakeBuyAmount
+        ]
+      }, function () {
+        that.showStakeBuy = false
+        that.getStakeInfo()
+        console.log('stake claimProfit success...')
+      })
+    },
+    async claimProfit () {
+      await useContractMethods({
+        contract: that.initContractStake,
+        methodName: 'claimProfit',
+        parameters: []
+      }, function () {
+        that.showUnlockToken = false
+        that.getEndInfo()
+        console.log('stake claimProfit success...')
+      })
+    },
+    // stake end
     // LIQUIDITY ENDING REWARDS start
     changeEndTab (i) {
       that.endTab.index = i
@@ -356,7 +448,7 @@ export default {
       }
       // Pool Liquidity mining rewards
       const rewardsToken = await that.initContractEnd.rewardsToken()
-      const rewardsTokenContract = useTokenContract(rewardsToken, COIN_ABI.r_seeweed)
+      const rewardsTokenContract = useTokenContract(rewardsToken, COIN_ABI.r_seaweed)
       const rewardBalance = await rewardsTokenContract.balanceOf(that.account)
       that.endTotalList[0].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(rewardBalance.toString()), 2))
       // Your Address Balance
@@ -426,8 +518,22 @@ export default {
       })
     },
     // LIQUIDITY ENDING REWARDS end
-    changeInterfaceTab (i) {
+    changeInterfaceTab (v, i) {
       this.interfaceTab.index = i
+      switch (v.type) {
+        case 'ending':
+          that.getEndInfo()
+          break
+        case 'utilization':
+          break
+        case 'stakeEarn':
+          that.getStakeInfo()
+          break
+        case 'bonding':
+          break
+        case 'token':
+          break
+      }
     },
     changeUtilizationTab (i) {
       this.utilizationTab.index = i
@@ -477,7 +583,7 @@ export default {
     async sell () {
       const tokenContract = useTokenContract(process.env.buy_sell_HT, COIN_ABI.buy_sell)
       const token = await tokenContract.token()
-      const tokenContract2 = useTokenContract(token, COIN_ABI.r_seeweed)
+      const tokenContract2 = useTokenContract(token, COIN_ABI.r_seaweed)
       const allowance = await tokenContract2.allowance(that.account, process.env.buy_sell_HT)
       const allowanceFormat = allowance.toString()
       if (parseInt(allowanceFormat) >= parseInt(that.$web3_http.utils.toWei(parseFloat(that.putAmount).toString()))) {

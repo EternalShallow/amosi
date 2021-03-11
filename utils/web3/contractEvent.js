@@ -99,6 +99,10 @@ export async function useContractMethods ({ contract, methodName, parameters, ev
   })
     .catch((error) => {
       console.error('Failed to request', error)
-      alert(error.message)
+      if (error?.data?.message) {
+        alert(error?.data?.message || error.message)
+      } else {
+        alert(error.message)
+      }
     })
 }
