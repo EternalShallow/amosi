@@ -83,8 +83,7 @@ export default {
           }
         ],
         index: 0
-      },
-      liquidityValue: 45
+      }
     }
   },
   mounted () {
@@ -100,6 +99,7 @@ export default {
         that.account = that.$account
       }
     },
+    // 判断approve的数量是否大于当前操作的数量
     async getAllowance () {
       const allowance = await that.poolContract.allowance(that.account, that.currentLiquidity.contractPool)
       that.allowance = allowance.toString()
@@ -107,11 +107,13 @@ export default {
       that.isApprove = parseInt(allowance) >= parseInt(that.$web3.utils.toWei(that.amount.toString()))
       console.log(that.isApprove)
     },
+    // 初始化合约
     async getContractInit () {
       console.log(that.liquidity.list[that.liquidity.index])
       try {
         that.currentLiquidity = that.liquidity.list[that.liquidity.index]
         that.poolContract = useTokenContract(that.currentLiquidity.contractPool, COIN_ABI.pool_HT)
+        // 判断是HT还是HRC20的合约，分别获取不同的ABI如果ABI不一致的话
         // if (that.currentLiquidity.currency === 'HT') {
         //   that.poolContract = useTokenContract(that.currentLiquidity.contractPool, COIN_ABI.pool_HT)
         // } else {
@@ -132,6 +134,7 @@ export default {
         console.log(e)
       }
     },
+    // 修改input的数量
     changeAmount (val) {
       if (!val) {
         that.receive = ''
@@ -167,6 +170,7 @@ export default {
         document.getElementById('liquidity').scrollIntoView()
       })
     },
+    // 修改需要得到的数量
     changeReceive (val) {
       if (!val) {
         that.amount = ''

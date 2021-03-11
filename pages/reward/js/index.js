@@ -336,8 +336,10 @@ export default {
     initPage () {
       that = this
       that.account = that.$account
+      // 页面进来请求第一页的数据
       that.getEndInfo()
     },
+    // 钱包地址获取到之后加载页面数据
     setAccount () {
       this.initPage()
     },
@@ -347,6 +349,7 @@ export default {
       that.currentStakeTab = that.stakeTab.list[that.stakeTab.index]
       that.getStakeInfo()
     },
+    // 获取第三个模块的数据
     async getStakeInfo () {
       that.currentStakeTab = that.stakeTab.list[that.stakeTab.index]
       that.stakeEarnList[1].currency = that.currentStakeTab.currency
@@ -358,20 +361,23 @@ export default {
       const withdrawBalance = await seaweedContract.balanceOf(that.account)
       that.stakeEarnList[0].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(withdrawBalance.toString()), 6))
       const balance = await that.initContractStake.balanceOf(that.account)
+      // 获取合约read数据
       that.potTotalSupply = await that.initContractStake.totalSupply()
       that.stakeEarnList[1].balance = balance
       const profitOf = await that.initContractStake.profitOf(that.account)
       that.stakeEarnList[2].balance = parseFloat(keepPoint(that.$web3_http.utils.fromWei(profitOf.toString()), 6))
     },
+    // 第三模块sell操作
     async stakeSell () {
       if (!that.stakeWithdrawAmount) {
         return alert('amount 不能为空')
       }
       const seaweedAddress = await that.initContractStake.Seaweed()
-      // const seaweedContract = useTokenContract(seaweedAddress, COIN_ABI.stake_seaweed)
+      // 获取已经approve的数量
       const allowance = await that.initContractStake.allowance(that.account, that.currentStakeTab.contractPool)
       const allowanceFormat = allowance.toString()
       console.log(allowanceFormat)
+      // 判断approve的数量和当前数量
       if (parseInt(allowanceFormat) >= parseInt(that.$web3_http.utils.toWei(parseFloat(that.stakeWithdrawAmount).toString()))) {
         await that.stakeSureSell()
       } else {
@@ -385,6 +391,7 @@ export default {
         })
       }
     },
+    // 执行合约的sell操作
     async stakeSureSell () {
       await useContractMethods({
         contract: that.initContractStake,
@@ -392,12 +399,13 @@ export default {
         parameters: [
           that.$web3_http.utils.toWei(that.stakeWithdrawAmount.toString())
         ]
-      }, function () {
+      }, function () { // 合约成功之后的回调函数
         that.showStakeWithdraw = false
         that.getStakeInfo()
         console.log('stake claimProfit success...')
       })
     },
+    // 执行合约的buy操作
     async stakeBuy () {
       if (!that.stakeBuyAmount) {
         return alert('amount 不能为空')
@@ -414,6 +422,7 @@ export default {
         console.log('stake claimProfit success...')
       })
     },
+    // 执行合约的claimProfit操作
     async claimProfit () {
       await useContractMethods({
         contract: that.initContractStake,
@@ -426,7 +435,7 @@ export default {
       })
     },
     // stake end
-    // LIQUIDITY ENDING REWARDS start
+    // 第一个模块 LIQUIDITY ENDING REWARDS start
     changeEndTab (i) {
       that.endTab.index = i
       that.currentCurrencyEnd = that.endTab.list[that.endTab.index]
@@ -517,7 +526,8 @@ export default {
         console.log('withdraw success...')
       })
     },
-    // LIQUIDITY ENDING REWARDS end
+    // 第一个模块 LIQUIDITY ENDING REWARDS end
+    // 切换页面五个模块的初始化数据请求
     changeInterfaceTab (v, i) {
       this.interfaceTab.index = i
       switch (v.type) {
@@ -538,7 +548,7 @@ export default {
     changeUtilizationTab (i) {
       this.utilizationTab.index = i
     },
-    // bound start
+    // 第四个模块 bound start
     changeBoundTab (i) {
       this.boundTab.index = i
       that.putAmount = ''
@@ -563,6 +573,7 @@ export default {
       console.log(that.getAmount)
     },
     buy () {
+      // 需要传Value的合约操作初始化合约
       const tokenContract = useTokenContractWeb3(COIN_ABI.buy_sell, process.env.buy_sell_HT)
       sendTransactionEvent(
         tokenContract.methods.buy(
@@ -570,9 +581,9 @@ export default {
         )
           .send({
             from: that.account,
-            value: that.getAmountOriginal
+            value: that.getAmountOriginal // 合约需要传的Value
           }), {
-          summary: `buy ${that.putAmount} HT`
+          summary: `buy ${that.putAmount} HT` // 备注，可为空
         }, function () {
           that.putAmount = ''
           that.getAmountOriginal = ''
@@ -611,6 +622,6 @@ export default {
         console.log('sell success...')
       })
     }
-    // bound start
+    // 第四个模块 bound start
   }
 }

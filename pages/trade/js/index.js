@@ -55,10 +55,12 @@ export default {
     }
   },
   watch: {
+    // 切换存入期限以更新fee
     'tradeForm.hold': function (val) {
       console.log(val)
       this.getFees()
     },
+    // 切换行权类型以更新fee
     optionsType: function (val) {
       console.log(val)
       this.getFees()
@@ -68,17 +70,20 @@ export default {
     this.initPage()
   },
   methods: {
+    // 切换行权的币种
     changeTradeTab (i) {
       this.tradeTab.index = i
       this.getFees()
       this.getContractDataList()
     },
+    // 切换已经行权的展示记录
     changeContractTab (i) {
       this.contractTab.index = i
     },
     changeVal (val) {
       this.getFees()
     },
+    // fee 数据拿到之后进行逻辑处理
     async getFees () {
       console.log(!this.tradeForm.strikePrice || !this.tradeForm.optionSize)
       const strikePrice = this.tradeForm.strikePrice || this.strikePricePlaceholder
@@ -108,6 +113,7 @@ export default {
           totalFee: parseFloat(this.$web3_http.utils.fromWei(fees.total.toString(), 'ether'))
         }
         this.fees.totalCost = parseFloat(this.keepPoint(this.price_HT * this.fees.totalFee, 2))
+        // PUT 类型
         if (this.optionsType === '1') {
           this.fees.breakEven = parseFloat(this.keepPoint(strikePrice + (this.fees.totalCost / optionSize), 2))
         } else {
@@ -118,6 +124,7 @@ export default {
         console.log(e)
       }
     },
+    // 请求fee合约操作
     async getFeesResult (tokenContract, hold, optionSize, strikePrice, optionsType) {
       try {
         return await tokenContract.fees(
@@ -130,6 +137,7 @@ export default {
         return null
       }
     },
+    // buy contract options
     async buyOptions () {
       if (!this.tradeForm.strikePrice || !this.tradeForm.optionSize) {
         return
@@ -185,6 +193,7 @@ export default {
       const input = '0x' + txData.input.substr(10)
       return this.$web3_http.eth.abi.decodeParameters(func_abi, input)
     },
+    // 获取行权记录
     async getContractDataList () {
       const current_currency = this.tradeTab.list[this.tradeTab.index]
       const contract = current_currency.contract
@@ -251,6 +260,7 @@ export default {
         }
       }
     },
+    // 执行行权操作
     async exercise (v) {
       const that = this
       const current_currency = this.tradeTab.list[this.tradeTab.index]
