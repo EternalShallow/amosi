@@ -4,6 +4,7 @@ import { MaxUint256 } from '@ethersproject/constants'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { keepPoint, numAdd, numDiv, numMulti, numSub } from '../../../utils/function'
 import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
+
 let that
 export default {
   data () {
@@ -160,6 +161,11 @@ export default {
         console.log(numDiv(numMulti(that.totalSupply, that.withdrawProfitAmount), numSub(that.totalBalance, that.withdrawProfitAmount)))
         that.withdrawProfitWriteAmount = numDiv(numMulti(that.totalSupply, that.withdrawProfitAmount), numSub(that.totalBalance, that.withdrawProfitAmount))
       }
+    },
+    scrollToLiquidity () {
+      this.$nextTick(() => {
+        document.getElementById('liquidity').scrollIntoView()
+      })
     },
     changeReceive (val) {
       if (!val) {

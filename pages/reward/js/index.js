@@ -1,7 +1,7 @@
 import { useTokenContract, useTokenContractWeb3 } from '../../../utils/web3/web3Utils'
 import COIN_ABI from '../../../utils/web3/coinABI'
 import { sendTransactionEvent, useContractMethods } from '../../../utils/web3/contractEvent'
-import { keepPoint, numDiv } from '../../../utils/function'
+import { keepPoint } from '../../../utils/function'
 import { approveEvent } from '../../../utils/web3/contractApprove'
 let that
 export default {

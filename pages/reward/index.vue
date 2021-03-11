@@ -167,8 +167,7 @@
               </div>
             </div>
           </div>
-          <div class="title-curw">HEGIC Bonding Curw</div>
-          <div class="hegic-chart" id="hegicChart"></div>
+<!--          <div class="title-curw">HEGIC Bonding Curw</div>-->
           <div class="liquidity-main display-flex box-center-start">
             <div class="liquidity-text-box">
               <div class="liquidity-text-item">

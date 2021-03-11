@@ -1,6 +1,6 @@
 <template>
   <div id="app" data-app>
-    <div class="main display-flex box-column">
+    <div class="main display-flex box-column" id="main" ref="main">
       <div class="header-box center-width display-flex box-around">
         <div class="name-logo display-flex box-center">
           <div class="logo-icon"><img src="../assets/image/logo@2x.png" alt=""></div>

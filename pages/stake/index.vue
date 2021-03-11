@@ -33,7 +33,7 @@
                     <div class="currency-a">{{liquidity.list[liquidity.index].currency}}</div>
                   </div>
                   <div class="display-flex btn-deposit-out">
-                    <div class="btn-deposit no-select">DEPOSIT</div>
+                    <div class="btn-deposit no-select" @click="scrollToLiquidity">DEPOSIT</div>
                   </div>
                 </div>
                 <div class="deposit-item">
@@ -143,7 +143,7 @@
 <!--        </div>-->
 <!--      </div>-->
 <!--    </div>-->
-    <div class="liquidity-box center-width display-flex box-center-start">
+    <div class="liquidity-box center-width display-flex box-center-start" id="liquidity">
       <div class="sub-title-box">
         <div class="display-flex box-center-end">
           <div class="line1"></div>
